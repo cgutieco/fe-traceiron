@@ -1,0 +1,92 @@
+---
+import {Icon} from '@shared/ui/icon';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {ecosystem} = t;
+---
+
+<section class="ti-section" id={ecosystem.id} aria-labelledby="ecosystem-title">
+    <div class="ti-container">
+        <p class="ti-label">{ecosystem.eyebrow}</p>
+        <h2 id="ecosystem-title" class="ti-display ti-h2 ti-eco__title">
+            {ecosystem.title}
+        </h2>
+
+        <div class="ti-eco__grid">
+            <article class="ti-card ti-eco__cell ti-eco__cell--lead ti-reveal">
+                <Icon name="watch" class="ti-eco__icon" />
+                <h3 class="ti-h3">{ecosystem.items.watch.title}</h3>
+                <p class="ti-small ti-muted">{ecosystem.items.watch.body}</p>
+            </article>
+
+            <article class="ti-card ti-eco__cell ti-reveal">
+                <Icon name="smartphone" class="ti-eco__icon" />
+                <h3 class="ti-h3">{ecosystem.items.liveActivity.title}</h3>
+                <p class="ti-small ti-muted">{ecosystem.items.liveActivity.body}</p>
+            </article>
+
+            <article class="ti-card ti-eco__cell ti-reveal">
+                <Icon name="widgets" class="ti-eco__icon" />
+                <h3 class="ti-h3">{ecosystem.items.widgets.title}</h3>
+                <p class="ti-small ti-muted">{ecosystem.items.widgets.body}</p>
+            </article>
+
+            <article class="ti-card ti-eco__cell ti-eco__cell--wide ti-reveal">
+                <Icon name="cloud" class="ti-eco__icon" />
+                <h3 class="ti-h3">{ecosystem.items.cloudkit.title}</h3>
+                <p class="ti-small ti-muted">{ecosystem.items.cloudkit.body}</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<style>
+    .ti-eco__title {
+        margin-top: var(--sp-xs);
+        margin-bottom: var(--sp-2xl);
+    }
+
+    .ti-eco__grid {
+        display: grid;
+        gap: var(--sp-sm);
+    }
+
+    .ti-eco__cell {
+        display: grid;
+        gap: var(--sp-xs);
+        align-content: start;
+    }
+
+    .ti-eco__icon {
+        color: var(--ti-gold-bright);
+        margin-bottom: var(--sp-xs);
+    }
+
+    @media (width >= 48rem) {
+        .ti-eco__grid {
+            grid-template-columns: 1.25fr 1fr 1fr;
+            gap: var(--sp-md);
+        }
+
+        .ti-eco__cell--lead {
+            grid-row: span 2;
+            padding: var(--sp-lg);
+            background-color: var(--ti-surface);
+            border-color: var(--ti-border-strong);
+        }
+
+        .ti-eco__cell--lead .ti-h3 {
+            font-size: calc(var(--fs-h3) * 1.15);
+        }
+
+        .ti-eco__cell--wide {
+            grid-column: span 2;
+        }
+    }
+</style>

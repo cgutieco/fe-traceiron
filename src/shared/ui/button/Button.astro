@@ -1,0 +1,49 @@
+---
+export interface Props {
+    variant?: 'primary' | 'secondary';
+    href?: string;
+    type?: 'button' | 'submit' | 'reset';
+    target?: string;
+    rel?: string;
+    class?: string;
+    id?: string;
+    [key: string]: unknown;
+}
+
+const {
+    variant = 'primary',
+    href,
+    type = 'button',
+    target,
+    rel: customRel,
+    class: className,
+    id,
+    ...rest
+} = Astro.props;
+
+const isLink = typeof href === 'string';
+const btnClass = `ti-btn--${variant}`;
+
+const defaultRel =
+    isLink && (target === '_blank' || href.startsWith('http')) ? 'noopener' : undefined;
+const rel = customRel ?? defaultRel;
+---
+
+{
+    isLink ? (
+        <a
+            id={id}
+            class:list={[btnClass, className]}
+            href={href}
+            target={target}
+            rel={rel}
+            {...rest}
+        >
+            <slot />
+        </a>
+    ) : (
+        <button id={id} class:list={[btnClass, className]} type={type} {...rest}>
+            <slot />
+        </button>
+    )
+}

@@ -1,0 +1,68 @@
+---
+import {Wordmark} from '@shared/ui/wordmark';
+import {Button} from '@shared/ui/button';
+import {AppStoreBadge} from '@shared/ui/app-store-badge';
+import {localizePath, useTranslations, type Locale} from '@shared/i18n';
+import type {ShareState} from '@entities/content-pack/model/content-pack';
+
+interface Props {
+    locale: Locale;
+    state: Exclude<ShareState, 'OK' | 'OVERSIZED'>;
+}
+
+const {locale, state} = Astro.props;
+const t = useTranslations(locale);
+
+const COPY = {
+    BAD_ID: t.share.states.badId,
+    NOT_FOUND: t.share.states.notFound,
+    MALFORMED: t.share.states.malformed,
+    SERVICE_DOWN: t.share.states.serviceDown
+} as const;
+
+const copy = COPY[state];
+
+const toLanding = state === 'BAD_ID' || state === 'NOT_FOUND';
+---
+
+<section class="ti-fallback">
+    <header class="ti-fallback__brand">
+        <a href={localizePath('/', locale)}>
+            <Wordmark size="sm" />
+        </a>
+    </header>
+
+    <h1 class="ti-display ti-fallback__title">{copy.title}</h1>
+    <p class="ti-lead">{copy.body}</p>
+
+    <div class="ti-fallback__cta">
+        {
+            toLanding ? (
+                <Button variant="secondary" href={localizePath('/', locale)}>
+                    {t.cta.backHome}
+                </Button>
+            ) : (
+                <AppStoreBadge locale={locale} />
+            )
+        }
+    </div>
+</section>
+
+<style>
+    .ti-fallback {
+        display: grid;
+        gap: var(--sp-md);
+        justify-items: start;
+        padding-block: var(--sp-2xl);
+    }
+
+    .ti-fallback__brand {
+        margin-bottom: var(--sp-lg);
+    }
+
+    .ti-fallback__title {
+        font-size: var(--fs-h2);
+        color: var(--ti-text);
+        max-width: 20ch;
+    }
+</style>

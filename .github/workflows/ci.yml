@@ -1,0 +1,140 @@
+name: CI
+
+on:
+    push:
+        branches: [master]
+    pull_request:
+        branches: [master]
+
+jobs:
+    quality:
+        name: Quality & Architecture
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 11.9.0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Lint JavaScript & TypeScript
+              run: pnpm lint
+
+            - name: Lint CSS & Styles
+              run: pnpm lint:css
+
+            - name: Check Formatting
+              run: pnpm format:check
+
+            - name: Run Astro & i18n Checks
+              run: pnpm check
+
+            - name: Check FSD Architecture
+              run: node scripts/check-architecture.mjs
+
+    unit:
+        name: Unit & Component Tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 11.9.0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Run Vitest Suite
+              run: pnpm test
+
+    build-and-verify:
+        name: Build & Conformance
+        needs: [quality, unit]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 11.9.0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Build project
+              run: pnpm build
+
+            - name: Check Performance Budget
+              run: pnpm check:budget
+
+            - name: Check Output Conformance
+              run: pnpm check:conformance
+
+            - name: Upload Build Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: dist-client
+                  path: dist/client
+                  retention-days: 1
+
+    e2e:
+        name: E2E & Accessibility Tests
+        needs: build-and-verify
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Install pnpm
+              uses: pnpm/action-setup@v4
+              with:
+                  version: 11.9.0
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: 'pnpm'
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Download Build Artifacts
+              uses: actions/download-artifact@v4
+              with:
+                  name: dist-client
+                  path: dist/client
+
+            - name: Install Playwright Browsers
+              run: pnpm exec playwright install --with-deps chromium
+
+            - name: Run Playwright & Axe Suite
+              run: pnpm test:e2e

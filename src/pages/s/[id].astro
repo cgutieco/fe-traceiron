@@ -1,0 +1,15 @@
+---
+export const prerender = false;
+
+import {ShareView, renderGenericAliasRoute} from '@views/share';
+
+const result = await renderGenericAliasRoute(Astro, 's');
+if ('redirect' in result) return Astro.redirect(result.redirect, 301);
+---
+
+<ShareView
+    locale={result.resolution.locale}
+    state={result.resolution.state}
+    pack={result.resolution.pack}
+    path={result.path}
+/>

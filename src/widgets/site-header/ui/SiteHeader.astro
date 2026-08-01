@@ -1,0 +1,81 @@
+---
+import {Wordmark} from '@shared/ui/wordmark';
+import {LangSwitcher} from '@features/language-switch';
+import {localizePath, useTranslations, type Locale} from '@shared/i18n';
+import {APPSTORE_URL} from '@shared/config/site';
+
+interface Props {
+    locale: Locale;
+    canonicalPath: string;
+}
+
+const {locale, canonicalPath} = Astro.props;
+const t = useTranslations(locale);
+---
+
+<header class="ti-header">
+    <div class="ti-container ti-header__inner">
+        <a class="ti-header__brand" href={localizePath('/', locale)}>
+            <Wordmark size="sm" />
+            <span class="ti-sr-only">{t.nav.home}</span>
+        </a>
+
+        <nav class="ti-header__nav" aria-label="TraceIron">
+            <LangSwitcher locale={locale} canonicalPath={canonicalPath} />
+            {
+                APPSTORE_URL && (
+                    <a class="ti-header__download" href={APPSTORE_URL} rel="noopener">
+                        {t.nav.download}
+                    </a>
+                )
+            }
+        </nav>
+    </div>
+</header>
+
+<style>
+    .ti-header {
+        position: relative;
+        z-index: 2;
+        padding-block: var(--sp-sm);
+    }
+
+    .ti-header__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp-sm);
+        flex-wrap: wrap;
+    }
+
+    .ti-header__brand {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    .ti-header__nav {
+        display: flex;
+        align-items: center;
+        gap: var(--sp-xs) var(--sp-md);
+        flex-wrap: wrap;
+    }
+
+    .ti-header__download {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        color: var(--ti-text-muted);
+        font-size: var(--fs-caption);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-label);
+        transition: color 160ms ease;
+    }
+
+    .ti-header__download:hover {
+        color: var(--ti-text);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+</style>

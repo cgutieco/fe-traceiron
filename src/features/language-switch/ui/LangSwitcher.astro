@@ -1,0 +1,79 @@
+---
+import {localizePath, useTranslations, type Locale} from '@shared/i18n';
+import {LANG_COOKIE_NAME, LANG_COOKIE_MAX_AGE} from '../model/cookie';
+
+interface Props {
+    locale: Locale;
+
+    canonicalPath: string;
+    class?: string;
+}
+
+const {locale, canonicalPath, class: className} = Astro.props;
+const t = useTranslations(locale);
+---
+
+<nav class:list={['ti-lang', className]} aria-label={t.a11y.langLabel}>
+    <a
+        href={localizePath(canonicalPath, 'en')}
+        hreflang="en"
+        lang="en"
+        data-ti-lang="en"
+        aria-current={locale === 'en' ? 'true' : undefined}>{t.lang.en}</a
+    >
+    <span class="ti-lang__sep" aria-hidden="true">/</span>
+    <a
+        href={localizePath(canonicalPath, 'es')}
+        hreflang="es"
+        lang="es"
+        data-ti-lang="es"
+        aria-current={locale === 'es' ? 'true' : undefined}>{t.lang.es}</a
+    >
+</nav>
+
+<script is:inline define:vars={{LANG_COOKIE_NAME, LANG_COOKIE_MAX_AGE}}>
+    document.querySelectorAll('[data-ti-lang]').forEach(function (el) {
+        el.addEventListener('click', function () {
+            document.cookie =
+                LANG_COOKIE_NAME +
+                '=' +
+                el.dataset.tiLang +
+                ';path=/;max-age=' +
+                LANG_COOKIE_MAX_AGE +
+                ';samesite=lax';
+        });
+    });
+</script>
+
+<style>
+    .ti-lang {
+        display: flex;
+        align-items: center;
+        gap: var(--sp-xs);
+        font-size: var(--fs-caption);
+        letter-spacing: var(--tracking-label);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .ti-lang a {
+        color: var(--ti-text-muted);
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        padding-inline: var(--sp-2xs);
+        transition: color 160ms ease;
+    }
+
+    .ti-lang a:hover {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-lang a[aria-current='true'] {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-lang__sep {
+        color: var(--ti-ghost);
+    }
+</style>

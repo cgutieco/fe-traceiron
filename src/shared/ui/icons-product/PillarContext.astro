@@ -1,0 +1,26 @@
+---
+interface Props {
+    title?: string;
+    class?: string;
+}
+const {title, class: className} = Astro.props;
+---
+
+<svg
+    class:list={['ti-icon', 'ti-icon--pillar', className]}
+    viewBox="0 0 32 32"
+    role={title ? 'img' : undefined}
+    aria-hidden={title ? undefined : 'true'}
+    focusable="false"
+>
+    {title && <title>{title}</title>}
+
+    <rect x="4" y="4" width="24" height="24"></rect>
+
+    <path d="M13 7.5A5.5 5.5 0 1 1 7.5 13"></path>
+    <path d="M13 13V9.5"></path>
+
+    <path d="M14 22h11"></path>
+    <path d="M16.5 19.5 14 22l2.5 2.5"></path>
+    <path d="M22.5 19.5 25 22l-2.5 2.5"></path>
+</svg>

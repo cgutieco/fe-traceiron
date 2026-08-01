@@ -1,0 +1,117 @@
+---
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {faq} = t;
+---
+
+<section class="ti-section" id={faq.id} aria-labelledby="faq-title">
+    <div class="ti-container ti-faq">
+        <p class="ti-label">{faq.eyebrow}</p>
+        <h2 id="faq-title" class="ti-display ti-h2 ti-faq__title">{faq.title}</h2>
+
+        <div class="ti-faq__list">
+            {
+                faq.items.map((item) => (
+                    <details class="ti-faq__item">
+                        <summary class="ti-faq__q">
+                            <span>{item.q}</span>
+                        </summary>
+                        <div class="ti-faq__wrap">
+                            <p class="ti-faq__a ti-small ti-muted">{item.a}</p>
+                        </div>
+                    </details>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .ti-faq__title {
+        margin-top: var(--sp-xs);
+        margin-bottom: var(--sp-xl);
+    }
+
+    .ti-faq__list {
+        border-top: 1px solid var(--ti-border-hair);
+        max-width: 76ch;
+    }
+
+    .ti-faq__item {
+        border-bottom: 1px solid var(--ti-border-hair);
+    }
+
+    .ti-faq__q {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp-md);
+        min-height: 44px;
+        padding-block: var(--sp-sm);
+        cursor: pointer;
+        font-size: var(--fs-body);
+        font-weight: 500;
+        list-style: none;
+        transition: color 160ms ease;
+    }
+
+    .ti-faq__q::-webkit-details-marker {
+        display: none;
+    }
+
+    .ti-faq__q:hover {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-faq__q::after {
+        content: '';
+        flex: none;
+        width: 14px;
+        height: 14px;
+        background:
+            linear-gradient(var(--ti-gold-bright), var(--ti-gold-bright)) center / 14px 1px
+                no-repeat,
+            linear-gradient(var(--ti-gold-bright), var(--ti-gold-bright)) center / 1px 14px
+                no-repeat;
+        transition: transform 200ms ease;
+    }
+
+    .ti-faq__item[open] .ti-faq__q::after {
+        background: linear-gradient(var(--ti-gold-bright), var(--ti-gold-bright)) center / 14px 1px
+            no-repeat;
+        transform: rotate(180deg);
+    }
+
+    .ti-faq__a {
+        padding-bottom: var(--sp-md);
+        max-width: 68ch;
+    }
+
+    @supports selector(::details-content) {
+        @media (prefers-reduced-motion: no-preference) {
+            .ti-faq__item::details-content {
+                display: grid;
+                grid-template-rows: 0fr;
+                overflow: hidden;
+                transition:
+                    grid-template-rows 240ms ease,
+                    content-visibility 240ms allow-discrete;
+                transition-behavior: allow-discrete;
+            }
+
+            .ti-faq__item[open]::details-content {
+                grid-template-rows: 1fr;
+            }
+        }
+    }
+
+    .ti-faq__wrap {
+        min-height: 0;
+    }
+</style>

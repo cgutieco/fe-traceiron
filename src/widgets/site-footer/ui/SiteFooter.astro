@@ -1,0 +1,102 @@
+---
+import {Wordmark} from '@shared/ui/wordmark';
+import {LangSwitcher} from '@features/language-switch';
+import {interpolate, localizePath, useTranslations, type Locale} from '@shared/i18n';
+import {SUPPORT_EMAIL} from '@shared/config/site';
+
+interface Props {
+    locale: Locale;
+    canonicalPath: string;
+
+    minimal?: boolean;
+}
+
+const {locale, canonicalPath, minimal = false} = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class:list={['ti-footer', minimal && 'ti-footer--minimal']}>
+    <div class="ti-container">
+        <hr class="ti-rule" />
+
+        <div class="ti-footer__top">
+            <a href={localizePath('/', locale)} class="ti-footer__brand">
+                <Wordmark size="sm" />
+            </a>
+
+            <nav class="ti-footer__links" aria-label={t.footer.privacy}>
+                <a href={localizePath('/privacy', locale)}>{t.footer.privacy}</a>
+                <a href={localizePath('/terms', locale)}>{t.footer.terms}</a>
+                <a href={`mailto:${SUPPORT_EMAIL}`}>{t.footer.contact}</a>
+            </nav>
+
+            <LangSwitcher locale={locale} canonicalPath={canonicalPath} />
+        </div>
+
+        <div class="ti-footer__legal">
+            <p class="ti-caption ti-muted">{interpolate(t.footer.copyright, {year})}</p>
+            <p class="ti-caption ti-footer__apple">{t.footer.appleNotice}</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .ti-footer {
+        padding-block: var(--sp-lg) var(--sp-xl);
+        margin-top: var(--section-gap);
+    }
+
+    .ti-footer--minimal {
+        margin-top: var(--sp-xl);
+    }
+
+    .ti-footer__top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp-md);
+        padding-block: var(--sp-md);
+    }
+
+    .ti-footer__brand {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+
+    .ti-footer__links {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--sp-xs) var(--sp-md);
+        font-size: var(--fs-caption);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-label);
+    }
+
+    .ti-footer__links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        color: var(--ti-text-muted);
+        transition: color 160ms ease;
+    }
+
+    .ti-footer__links a:hover {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-footer__legal {
+        display: grid;
+        gap: var(--sp-xs);
+        padding-top: var(--sp-sm);
+    }
+
+    .ti-footer__apple {
+        color: var(--ti-text-muted);
+        max-width: 68ch;
+    }
+</style>

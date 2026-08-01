@@ -1,0 +1,487 @@
+---
+import {Icon} from '@shared/ui/icon';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {ghost} = t;
+const d = ghost.demo;
+---
+
+<section class="ti-section" id={ghost.id} aria-labelledby="ghost-title">
+    <div class="ti-container ti-ghost">
+        <p class="ti-label">{ghost.eyebrow}</p>
+        <h2 id="ghost-title" class="ti-display ti-h2 ti-ghost__title">{ghost.title}</h2>
+        <p class="ti-lead ti-ghost__body">{ghost.body}</p>
+
+        <figure class="ti-card-demo ti-reveal" aria-label={d.srText}>
+            <div class="ti-card-demo__header">
+                <div class="ti-card-demo__header-main">
+                    <div class="ti-card-demo__title-row">
+                        <h3 class="ti-card-demo__title">{d.exercise}</h3>
+                        <span class="ti-card-demo__edit" aria-hidden="true">
+                            <Icon name="pencil" />
+                        </span>
+                    </div>
+                    <div class="ti-card-demo__meta-row">
+                        <span class="ti-badge ti-badge--category">{d.category}</span>
+                        <span class="ti-badge ti-badge--rest">
+                            <Icon name="timer" />
+                            <span>{d.rest}</span>
+                            <Icon name="pencil" class="ti-icon--xs" />
+                        </span>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="ti-card-demo__chevron"
+                    aria-hidden="true"
+                    tabindex="-1"
+                >
+                    <Icon name="chevron-down" />
+                </button>
+            </div>
+
+            <div class="ti-card-demo__cols" aria-hidden="true">
+                <span class="ti-col ti-col--set">{d.colSet}</span>
+                <span class="ti-col ti-col--weight">{d.colWeight}</span>
+                <span class="ti-col ti-col--reps">{d.colReps}</span>
+                <span class="ti-col ti-col--check"></span>
+            </div>
+
+            <div class="ti-card-demo__sets">
+                <div class="ti-set-group">
+                    <div class="ti-ghost-chip ti-ghost-chip--muted" aria-hidden="true">
+                        <Icon name="sparkles" />
+                        <span>{d.ghostLabel}: 40 kg × 12 reps</span>
+                    </div>
+                    <div class="ti-set-row">
+                        <span class="ti-set-num">1</span>
+                        <div class="ti-input-box">
+                            <span class="ti-numeric">40</span>
+                        </div>
+                        <div class="ti-input-box">
+                            <span class="ti-numeric">12</span>
+                        </div>
+                        <div class="ti-check-btn ti-check-btn--dim" aria-hidden="true">
+                            <Icon name="check" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ti-set-group ti-set-group--active">
+                    <div class="ti-ghost-chip ti-ghost-chip--active" aria-hidden="true">
+                        <Icon name="sparkles" />
+                        <span>{d.ghostLabel}: 50 kg × 12 reps</span>
+                    </div>
+                    <div class="ti-set-row ti-set-row--active">
+                        <span class="ti-set-num ti-set-num--active">2</span>
+                        <div class="ti-input-box ti-input-box--ghost">
+                            <span class="ti-input-ghost ti-numeric" aria-hidden="true">50</span>
+                            <span class="ti-input-live ti-numeric">50</span>
+                        </div>
+                        <div class="ti-input-box ti-input-box--ghost">
+                            <span class="ti-input-ghost ti-numeric" aria-hidden="true">12</span>
+                            <span class="ti-input-live ti-numeric">12</span>
+                        </div>
+                        <div class="ti-check-btn ti-check-btn--active" aria-hidden="true">
+                            <Icon name="check" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ti-set-group">
+                    <div class="ti-ghost-chip ti-ghost-chip--surpassed" aria-hidden="true">
+                        <Icon name="flame" />
+                        <span>{d.surpassedLabel}: {d.surpassedWeightValue} kg × 12 reps</span>
+                    </div>
+                    <div class="ti-set-row">
+                        <span class="ti-set-num">3</span>
+                        <div class="ti-input-box ti-input-box--surpassed">
+                            <span class="ti-numeric">{d.surpassedWeightValue}</span>
+                        </div>
+                        <div class="ti-input-box">
+                            <span class="ti-numeric">12</span>
+                        </div>
+                        <div class="ti-check-btn ti-check-btn--success" aria-hidden="true">
+                            <Icon name="check" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ti-card-demo__footer" aria-hidden="true">
+                <span class="ti-action-pill"><Icon name="plus" /> {d.btnWarmup}</span>
+                <span class="ti-action-pill ti-action-pill--primary"
+                    ><Icon name="plus" /> {d.btnSet}</span
+                >
+                <span class="ti-action-pill"><Icon name="plus" /> {d.btnDropset}</span>
+            </div>
+
+            <figcaption class="ti-card-demo__note ti-caption">
+                {d.disclaimer}
+            </figcaption>
+
+            <p class="ti-sr-only">{d.srText}</p>
+        </figure>
+    </div>
+</section>
+
+<style>
+    .ti-ghost__title {
+        margin-top: var(--sp-xs);
+        max-width: 18ch;
+    }
+
+    .ti-ghost__body {
+        margin-top: var(--sp-md);
+        color: var(--ti-text-muted);
+    }
+
+    .ti-card-demo {
+        margin-top: var(--sp-2xl);
+        background-color: var(--ti-surface);
+        border: 1px solid var(--ti-border);
+        border-radius: var(--radius-panel);
+        padding: var(--sp-md);
+        box-shadow: 0 20px 40px rgb(0 0 0 / 40%);
+        max-width: 580px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @media (width >= 48rem) {
+        .ti-card-demo {
+            padding: var(--sp-lg);
+        }
+    }
+
+    .ti-card-demo__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--sp-sm);
+        padding-bottom: var(--sp-md);
+        border-bottom: 1px solid var(--ti-border-hair);
+    }
+
+    .ti-card-demo__header-main {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-2xs);
+    }
+
+    .ti-card-demo__title-row {
+        display: flex;
+        align-items: center;
+        gap: var(--sp-xs);
+    }
+
+    .ti-card-demo__title {
+        font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        color: var(--ti-text);
+        letter-spacing: -0.01em;
+        margin: 0;
+    }
+
+    .ti-card-demo__edit {
+        color: var(--ti-gold);
+        display: inline-flex;
+        opacity: 0.85;
+    }
+
+    .ti-card-demo__edit :global(.ti-icon) {
+        width: 16px;
+        height: 16px;
+    }
+
+    .ti-card-demo__meta-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--sp-xs);
+        margin-top: 2px;
+    }
+
+    .ti-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: var(--fs-caption);
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+        font-weight: 500;
+    }
+
+    .ti-badge--category {
+        background-color: rgb(195 168 133 / 15%);
+        color: var(--ti-gold-bright);
+        font-weight: 600;
+    }
+
+    .ti-badge--rest {
+        background-color: rgb(255 255 255 / 4%);
+        color: var(--ti-text-muted);
+        border: 1px solid rgb(255 255 255 / 8%);
+    }
+
+    .ti-badge--rest :global(.ti-icon) {
+        width: 13px;
+        height: 13px;
+    }
+
+    .ti-icon--xs {
+        width: 11px !important;
+        height: 11px !important;
+        opacity: 0.7;
+    }
+
+    .ti-card-demo__chevron {
+        background: rgb(255 255 255 / 5%);
+        border: none;
+        color: var(--ti-text-muted);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        cursor: default;
+        flex-shrink: 0;
+    }
+
+    .ti-card-demo__chevron :global(.ti-icon) {
+        width: 18px;
+        height: 18px;
+    }
+
+    .ti-card-demo__cols {
+        display: grid;
+        grid-template-columns: 44px 1fr 1fr 48px;
+        gap: var(--sp-xs);
+        align-items: center;
+        padding-top: var(--sp-md);
+        padding-bottom: var(--sp-xs);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: var(--tracking-label);
+        color: var(--ti-text-muted);
+        text-align: center;
+    }
+
+    .ti-col--set {
+        text-align: left;
+        padding-left: var(--sp-xs);
+    }
+
+    .ti-col--weight {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-card-demo__sets {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-sm);
+        padding-top: var(--sp-2xs);
+    }
+
+    .ti-set-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .ti-ghost-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.75rem;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+        align-self: flex-start;
+        margin-left: 44px;
+        letter-spacing: -0.01em;
+    }
+
+    .ti-ghost-chip :global(.ti-icon) {
+        width: 13px;
+        height: 13px;
+        flex-shrink: 0;
+    }
+
+    .ti-ghost-chip--muted {
+        background: rgb(255 255 255 / 5%);
+        border: 1px solid rgb(255 255 255 / 8%);
+        color: var(--ti-text-muted);
+    }
+
+    .ti-ghost-chip--active {
+        background: rgb(230 194 128 / 12%);
+        border: 1px solid rgb(230 194 128 / 30%);
+        color: var(--ti-gold-bright);
+        font-weight: 600;
+        box-shadow: 0 0 12px rgb(230 194 128 / 15%);
+    }
+
+    .ti-ghost-chip--surpassed {
+        background: rgb(50 215 75 / 12%);
+        border: 1px solid rgb(50 215 75 / 30%);
+        color: var(--ti-success);
+        font-weight: 700;
+    }
+
+    .ti-set-row {
+        display: grid;
+        grid-template-columns: 44px 1fr 1fr 48px;
+        gap: var(--sp-xs);
+        align-items: center;
+    }
+
+    .ti-set-num {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ti-text-muted);
+        padding-left: var(--sp-xs);
+    }
+
+    .ti-set-num--active {
+        color: var(--ti-gold-bright);
+        font-weight: 700;
+    }
+
+    .ti-input-box {
+        position: relative;
+        background: #1a1914;
+        border: 1px solid rgb(255 255 255 / 8%);
+        border-radius: var(--radius-control);
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--ti-text);
+        overflow: hidden;
+    }
+
+    .ti-input-box--ghost {
+        border-color: rgb(230 194 128 / 35%);
+        background: rgb(230 194 128 / 5%);
+    }
+
+    .ti-input-ghost {
+        position: absolute;
+        top: 3px;
+        left: 8px;
+        font-size: 0.75rem;
+        font-weight: 400;
+        color: var(--ti-ghost);
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .ti-input-live {
+        position: relative;
+        z-index: 1;
+        color: var(--ti-text);
+    }
+
+    .ti-input-box--surpassed {
+        border-color: rgb(50 215 75 / 35%);
+        background: rgb(50 215 75 / 6%);
+        color: var(--ti-success);
+    }
+
+    .ti-check-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        justify-self: center;
+        transition: transform 0.2s ease;
+    }
+
+    .ti-check-btn :global(.ti-icon) {
+        width: 20px;
+        height: 20px;
+        stroke-width: 2.5;
+    }
+
+    .ti-check-btn--dim {
+        background: rgb(255 255 255 / 6%);
+        color: rgb(255 255 255 / 30%);
+        border: 1px solid rgb(255 255 255 / 8%);
+    }
+
+    .ti-check-btn--active {
+        background: var(--ti-grad-primary);
+        color: var(--ti-surface);
+        box-shadow: 0 0 16px rgb(230 194 128 / 35%);
+    }
+
+    .ti-check-btn--success {
+        background: var(--ti-success);
+        color: var(--ti-surface);
+    }
+
+    .ti-card-demo__footer {
+        display: flex;
+        gap: var(--sp-xs);
+        justify-content: center;
+        padding-top: var(--sp-md);
+        margin-top: var(--sp-xs);
+        border-top: 1px solid var(--ti-border-hair);
+        flex-wrap: wrap;
+    }
+
+    .ti-card-demo__note {
+        margin-top: var(--sp-sm);
+        text-align: center;
+        color: var(--ti-text-muted);
+        font-size: var(--fs-caption);
+        letter-spacing: normal;
+        text-transform: none;
+        opacity: 0.85;
+    }
+
+    .ti-action-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--ti-gold-bright);
+        background: rgb(230 194 128 / 8%);
+        border: 1px solid rgb(230 194 128 / 18%);
+        padding: 6px 12px;
+        border-radius: var(--radius-pill);
+    }
+
+    .ti-action-pill :global(.ti-icon) {
+        width: 14px;
+        height: 14px;
+    }
+
+    .ti-action-pill--primary {
+        background: rgb(230 194 128 / 16%);
+        border-color: rgb(230 194 128 / 35%);
+    }
+
+    @media (width <= 24rem) {
+        .ti-ghost-chip {
+            margin-left: 0;
+        }
+
+        .ti-card-demo__cols,
+        .ti-set-row {
+            grid-template-columns: 32px 1fr 1fr 40px;
+        }
+    }
+</style>

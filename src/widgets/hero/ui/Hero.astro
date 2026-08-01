@@ -1,0 +1,62 @@
+---
+import {Wordmark} from '@shared/ui/wordmark';
+import {AppStoreBadge} from '@shared/ui/app-store-badge';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="ti-hero" aria-labelledby="hero-title">
+    <div class="ti-hero__vignette" aria-hidden="true"></div>
+
+    <div class="ti-container ti-hero__inner">
+        <Wordmark as="h1" size="display" id="hero-title" class="ti-hero__mark" />
+        <p class="ti-lead ti-hero__lead">{t.hero.lead}</p>
+        <div class="ti-hero__cta">
+            <AppStoreBadge locale={locale} priority />
+        </div>
+    </div>
+</section>
+
+<style>
+    .ti-hero {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-height: 86svh;
+        padding-block: var(--sp-2xl);
+        overflow: hidden;
+    }
+
+    .ti-hero__vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+            120vw 88vh at 50% 38%,
+            rgb(212 175 55 / 8%) 0%,
+            transparent 62%
+        );
+    }
+
+    .ti-hero__inner {
+        position: relative;
+    }
+
+    .ti-hero__mark {
+        margin-bottom: var(--sp-md);
+    }
+
+    .ti-hero__lead {
+        max-width: 40ch;
+    }
+
+    .ti-hero__cta {
+        margin-top: var(--sp-xl);
+    }
+</style>

@@ -1,0 +1,57 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import {SiteHeader} from '@widgets/site-header';
+import {SiteFooter} from '@widgets/site-footer';
+import {Button} from '@shared/ui/button';
+import {localizePath, useTranslations} from '@shared/i18n';
+
+const locale = 'en' as const;
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+    locale={locale}
+    canonicalPath="/"
+    title={t.meta.notFound.title}
+    description={t.meta.notFound.description}
+    noindex={true}
+    alternates={false}
+>
+    <SiteHeader locale={locale} canonicalPath="/" />
+
+    <main id="main" class="ti-container ti-404">
+        <p class="ti-display ti-404__code ti-numeric">{t.notFound.code}</p>
+        <h1 class="ti-display ti-404__title">{t.notFound.title}</h1>
+        <p class="ti-lead">{t.notFound.body}</p>
+        <Button variant="secondary" class="ti-404__cta" href={localizePath('/', locale)}>
+            {t.cta.backHome}
+        </Button>
+    </main>
+
+    <SiteFooter locale={locale} canonicalPath="/" minimal />
+</BaseLayout>
+
+<style>
+    .ti-404 {
+        display: grid;
+        justify-items: start;
+        gap: var(--sp-md);
+        padding-block: var(--sp-3xl);
+    }
+
+    .ti-404__code {
+        font-size: var(--fs-h2);
+        color: var(--ti-gold-deep);
+        line-height: 1;
+    }
+
+    .ti-404__title {
+        font-size: var(--fs-h1);
+        color: var(--ti-text);
+        max-width: 18ch;
+    }
+
+    .ti-404__cta {
+        margin-top: var(--sp-sm);
+    }
+</style>

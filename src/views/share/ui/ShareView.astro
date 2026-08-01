@@ -1,0 +1,75 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import {SiteFooter} from '@widgets/site-footer';
+import {SharePreview} from '@widgets/share-preview';
+import {ShareFallback} from '@widgets/share-fallback';
+import {
+    buildMetrics,
+    type ShareState,
+    type ContentPack
+} from '@entities/content-pack/model/content-pack';
+import {interpolate, useTranslations, type Locale} from '@shared/i18n';
+import {SITE_URL} from '@shared/config/site';
+
+interface Props {
+    locale: Locale;
+    state: ShareState;
+    pack: ContentPack | null;
+
+    path: string;
+}
+
+const {locale, state, pack, path} = Astro.props;
+const t = useTranslations(locale);
+
+const shareUrl = `${SITE_URL}${path}`;
+
+let title = t.share.meta.fallbackTitle;
+let description = t.share.meta.fallbackDescription;
+
+if (pack) {
+    const metrics = buildMetrics(pack);
+    title = interpolate(t.share.meta.titleFormat, {title: pack.title});
+    description =
+        metrics.sets > 0
+            ? interpolate(t.share.meta.summarySets, {
+                  exercises: metrics.exercises,
+                  sets: metrics.sets
+              })
+            : interpolate(t.share.meta.summaryExercises, {exercises: metrics.exercises});
+}
+---
+
+<BaseLayout
+    locale={locale}
+    canonicalPath={path}
+    title={title}
+    description={description}
+    noindex={true}
+    alternates={false}
+    appArgument={shareUrl}
+    bodyClass="ti-share-body"
+>
+    <main id="main" class="ti-container ti-share-main">
+        {
+            pack ? (
+                <SharePreview locale={locale} pack={pack} state={state} shareUrl={shareUrl} />
+            ) : (
+                <ShareFallback
+                    locale={locale}
+                    state={state as 'BAD_ID' | 'NOT_FOUND' | 'MALFORMED' | 'SERVICE_DOWN'}
+                />
+            )
+        }
+    </main>
+
+    <SiteFooter locale={locale} canonicalPath="/" minimal={true} />
+</BaseLayout>
+
+<style>
+    .ti-share-main {
+        padding-block: var(--sp-xl);
+        max-width: 720px;
+        margin-inline: auto;
+    }
+</style>

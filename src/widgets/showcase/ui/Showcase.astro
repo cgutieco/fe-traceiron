@@ -1,0 +1,104 @@
+---
+import {Picture} from 'astro:assets';
+import {AppStoreBadge} from '@shared/ui/app-store-badge';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+import sessionProgress from '../../../assets/app/session-progress.png';
+import repository from '../../../assets/app/repository.png';
+import calendar from '../../../assets/app/calendar.png';
+import exerciseDetails from '../../../assets/app/exercise-details.png';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {showcase} = t;
+
+const SOURCES = [sessionProgress, repository, calendar, exerciseDetails];
+---
+
+<section class="ti-section ti-section--alt" id={showcase.id} aria-labelledby="showcase-title">
+    <div class="ti-container">
+        <p class="ti-label">{showcase.eyebrow}</p>
+        <h2 id="showcase-title" class="ti-display ti-h2 ti-showcase__title">
+            {showcase.title}
+        </h2>
+        <p class="ti-lead ti-showcase__lead">{showcase.lead}</p>
+
+        <ul class="ti-showcase__grid">
+            {
+                showcase.shots.map((shot, index) => (
+                    <li class="ti-shot ti-reveal">
+                        <div class="ti-device">
+                            <Picture
+                                src={SOURCES[index]}
+                                formats={['avif', 'webp']}
+                                widths={[280, 360, 480, 720]}
+                                sizes="(min-width: 64rem) 260px, (min-width: 48rem) 30vw, 70vw"
+                                alt={shot.alt}
+                                loading="lazy"
+                                decoding="async"
+                            />
+                        </div>
+                        <h3 class="ti-shot__caption ti-label">{shot.caption}</h3>
+                        <p class="ti-caption ti-muted">{shot.body}</p>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <div class="ti-showcase__cta">
+            <AppStoreBadge locale={locale} />
+        </div>
+    </div>
+</section>
+
+<style>
+    .ti-showcase__title {
+        margin-top: var(--sp-xs);
+    }
+
+    .ti-showcase__lead {
+        margin-top: var(--sp-sm);
+        margin-bottom: var(--sp-2xl);
+    }
+
+    .ti-showcase__grid {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--sp-lg);
+    }
+
+    .ti-shot {
+        display: grid;
+        gap: var(--sp-xs);
+        align-content: start;
+    }
+
+    .ti-device {
+        aspect-ratio: 1179 / 2556;
+        border: 1px solid var(--ti-border);
+        border-radius: 52px;
+        overflow: hidden;
+        background-color: var(--ti-bg);
+        margin-bottom: var(--sp-xs);
+    }
+
+    .ti-device :global(img) {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .ti-shot__caption {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-showcase__cta {
+        margin-top: var(--sp-2xl);
+    }
+</style>

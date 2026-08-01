@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import {SiteHeader} from '@widgets/site-header';
+import {SiteFooter} from '@widgets/site-footer';
+
+import {Hero} from '@widgets/hero';
+import {HowItWorks} from '@widgets/how-it-works';
+import {GhostMode} from '@widgets/ghost-mode';
+import {PainSolution} from '@widgets/pain-solution';
+import {Showcase} from '@widgets/showcase';
+import {Ecosystem} from '@widgets/ecosystem';
+import {Pricing} from '@widgets/pricing';
+import {Faq} from '@widgets/faq';
+import {ClosingCta} from '@widgets/closing-cta';
+
+import {useTranslations, type Locale} from '@shared/i18n';
+import {SITE_URL} from '@shared/config/site';
+import {faqPage, organization, softwareApplication, website} from '@shared/lib/jsonld';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+---
+
+<BaseLayout
+    locale={locale}
+    canonicalPath="/"
+    title={t.meta.home.title}
+    description={t.meta.home.description}
+    jsonLd={[
+        softwareApplication(t, locale, SITE_URL),
+        faqPage(t),
+        organization(SITE_URL),
+        website(t, locale, SITE_URL)
+    ]}
+>
+    <SiteHeader locale={locale} canonicalPath="/" />
+
+    <main id="main">
+        <Hero locale={locale} />
+        <HowItWorks locale={locale} />
+        <GhostMode locale={locale} />
+        <PainSolution locale={locale} />
+        <Showcase locale={locale} />
+        <Ecosystem locale={locale} />
+        <Pricing locale={locale} />
+        <Faq locale={locale} />
+        <ClosingCta locale={locale} />
+    </main>
+
+    <SiteFooter locale={locale} canonicalPath="/" />
+</BaseLayout>

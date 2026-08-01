@@ -1,0 +1,270 @@
+---
+import {Wordmark} from '@shared/ui/wordmark';
+import {AppStoreBadge} from '@shared/ui/app-store-badge';
+import {OpenInAppCta} from '@features/open-in-app';
+import {
+    buildMetrics,
+    buildRows,
+    type ContentPack,
+    type ShareState
+} from '@entities/content-pack/model/content-pack';
+import {interpolate, useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+    pack: ContentPack;
+    state: ShareState;
+    shareUrl: string;
+}
+
+const {locale, pack, state, shareUrl} = Astro.props;
+const t = useTranslations(locale);
+
+const metrics = buildMetrics(pack);
+const {rows, hidden} = buildRows(pack);
+const typeLabel = t.share.type[pack.contentType];
+---
+
+<article class="ti-sp">
+    <header class="ti-sp__brand">
+        <a href="/"><Wordmark size="sm" /></a>
+    </header>
+
+    <p class="ti-pill ti-sp__type">{typeLabel}</p>
+
+    <h1 class="ti-display ti-sp__title">{pack.title}</h1>
+
+    {
+        pack.authorName && (
+            <p class="ti-small ti-muted ti-sp__author">
+                {t.share.sharedBy} {pack.authorName}
+            </p>
+        )
+    }
+
+    <dl class="ti-sp__metrics">
+        {
+            metrics.routines > 1 && (
+                <div class="ti-sp__metric">
+                    <dt class="ti-caption">{t.share.metrics.routines}</dt>
+                    <dd class="ti-display ti-numeric">{metrics.routines}</dd>
+                </div>
+            )
+        }
+        <div class="ti-sp__metric">
+            <dt class="ti-caption">{t.share.metrics.exercises}</dt>
+            <dd class="ti-display ti-numeric">{metrics.exercises}</dd>
+        </div>
+        {
+            metrics.sets > 0 && (
+                <div class="ti-sp__metric">
+                    <dt class="ti-caption">{t.share.metrics.sets}</dt>
+                    <dd class="ti-display ti-numeric">{metrics.sets}</dd>
+                </div>
+            )
+        }
+        {
+            metrics.avgRest !== null && (
+                <div class="ti-sp__metric">
+                    <dt class="ti-caption">{t.share.metrics.rest}</dt>
+                    <dd class="ti-display ti-numeric">
+                        {metrics.avgRest}
+                        <span class="ti-sp__unit">{t.share.metrics.restUnit}</span>
+                    </dd>
+                </div>
+            )
+        }
+    </dl>
+
+    {state === 'OVERSIZED' && <p class="ti-small ti-sp__notice">{t.share.list.truncated}</p>}
+
+    {
+        rows.length > 0 ? (
+            <ol class="ti-sp__list">
+                {rows.map((row) => (
+                    <li class="ti-sp__row">
+                        <span class="ti-sp__order ti-numeric">{row.order}</span>
+
+                        <span class="ti-sp__main">
+                            <span class="ti-sp__name">{row.name}</span>
+                            <span class="ti-sp__tags">
+                                {row.muscleGroup && (
+                                    <span class="ti-pill ti-sp__muscle">{row.muscleGroup}</span>
+                                )}
+                                {row.isIsometric && (
+                                    <span class="ti-pill ti-sp__iso">{t.share.list.isometric}</span>
+                                )}
+                                {row.routineName && (
+                                    <span class="ti-caption ti-muted">{row.routineName}</span>
+                                )}
+                            </span>
+                        </span>
+
+                        {(row.sets !== null || row.restSeconds !== null) && (
+                            <span class="ti-sp__figures ti-caption">
+                                {row.sets !== null && (
+                                    <span class="ti-numeric">
+                                        {row.sets} {t.share.list.setsLabel}
+                                    </span>
+                                )}
+                                {row.restSeconds !== null && (
+                                    <span class="ti-numeric ti-muted">
+                                        {row.restSeconds}
+                                        {t.share.metrics.restUnit} {t.share.list.restLabel}
+                                    </span>
+                                )}
+                            </span>
+                        )}
+                    </li>
+                ))}
+            </ol>
+        ) : (
+            <p class="ti-small ti-muted">{t.share.list.emptyRoutine}</p>
+        )
+    }
+
+    {
+        hidden > 0 && (
+            <p class="ti-small ti-sp__more">{interpolate(t.share.list.more, {count: hidden})}</p>
+        )
+    }
+
+    <div class="ti-sp__cta">
+        <OpenInAppCta locale={locale} shareUrl={shareUrl} />
+        <AppStoreBadge locale={locale} />
+    </div>
+</article>
+
+<style>
+    .ti-sp {
+        display: grid;
+        gap: var(--sp-sm);
+    }
+
+    .ti-sp__brand {
+        margin-bottom: var(--sp-md);
+    }
+
+    .ti-sp__type {
+        justify-self: start;
+        color: var(--ti-gold-bright);
+        border-color: var(--ti-border-strong);
+    }
+
+    .ti-sp__title {
+        font-size: var(--fs-h1);
+        line-height: var(--lh-heading);
+        color: var(--ti-text);
+    }
+
+    .ti-sp__author {
+        margin-top: calc(var(--sp-xs) * -1);
+    }
+
+    .ti-sp__metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--sp-lg);
+        margin-block: var(--sp-md);
+        padding-block: var(--sp-md);
+        border-top: 1px solid var(--ti-border-hair);
+        border-bottom: 1px solid var(--ti-border-hair);
+    }
+
+    .ti-sp__metric dt {
+        color: var(--ti-text-muted);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-label);
+    }
+
+    .ti-sp__metric dd {
+        margin: var(--sp-2xs) 0 0;
+        font-size: var(--fs-h3);
+        color: var(--ti-gold-bright);
+        line-height: 1;
+    }
+
+    .ti-sp__unit {
+        font-family: var(--font-body);
+        font-size: 0.55em;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: 0;
+        color: var(--ti-text-muted);
+        margin-left: 0.15em;
+    }
+
+    .ti-sp__notice {
+        color: var(--ti-gold-bright);
+        padding: var(--sp-xs) var(--sp-sm);
+        border: 1px solid var(--ti-border-strong);
+        border-radius: var(--radius-control);
+    }
+
+    .ti-sp__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+    }
+
+    .ti-sp__row {
+        display: flex;
+        align-items: baseline;
+        gap: var(--sp-sm);
+        padding-block: var(--sp-sm);
+        border-bottom: 1px solid var(--ti-border-hair);
+    }
+
+    .ti-sp__order {
+        flex: none;
+        min-width: 2ch;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--ti-gold-deep);
+    }
+
+    .ti-sp__main {
+        flex: 1;
+        display: grid;
+        gap: var(--sp-2xs);
+    }
+
+    .ti-sp__name {
+        color: var(--ti-text);
+        font-weight: 500;
+    }
+
+    .ti-sp__tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--sp-2xs);
+    }
+
+    .ti-sp__iso {
+        color: var(--ti-gold-bright);
+        border-color: var(--ti-border-strong);
+    }
+
+    .ti-sp__figures {
+        flex: none;
+        display: grid;
+        justify-items: end;
+        gap: var(--sp-2xs);
+        text-align: right;
+    }
+
+    .ti-sp__more {
+        color: var(--ti-text-muted);
+        padding-top: var(--sp-sm);
+    }
+
+    .ti-sp__cta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--sp-md);
+        margin-top: var(--sp-lg);
+    }
+</style>

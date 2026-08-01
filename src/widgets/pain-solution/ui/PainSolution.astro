@@ -1,0 +1,131 @@
+---
+import {PillarGhost, PillarHaptic, PillarContext} from '@shared/ui/icons-product';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {pain} = t;
+
+const PILLAR_MAP = {
+    ghost: PillarGhost,
+    haptic: PillarHaptic,
+    context: PillarContext
+} as const;
+---
+
+<section class="ti-section" id={pain.id} aria-labelledby="pain-title">
+    <div class="ti-container">
+        <p class="ti-label">{pain.eyebrow}</p>
+        <h2 id="pain-title" class="ti-display ti-h2 ti-pain__title">{pain.title}</h2>
+
+        <div class="ti-pain__list">
+            {
+                pain.pairs.map((pair, index) => {
+                    const Pillar = PILLAR_MAP[pair.pillar as keyof typeof PILLAR_MAP];
+                    return (
+                        <article
+                            class:list={[
+                                'ti-pair',
+                                index % 2 === 1 && 'ti-pair--flip',
+                                'ti-reveal'
+                            ]}
+                        >
+                            <p class="ti-pair__pain">{pair.pain}</p>
+
+                            <div class="ti-pair__solution">
+                                <Pillar class="ti-pair__icon" />
+                                <h3 class="ti-h3 ti-pair__solution-title">{pair.solutionTitle}</h3>
+                                <p class="ti-small">{pair.solution}</p>
+                            </div>
+                        </article>
+                    );
+                })
+            }
+        </div>
+    </div>
+</section>
+
+<style>
+    .ti-pain__title {
+        margin-top: var(--sp-xs);
+        margin-bottom: var(--sp-2xl);
+        max-width: 20ch;
+    }
+
+    .ti-pain__list {
+        display: grid;
+        gap: var(--sp-2xl);
+    }
+
+    .ti-pair {
+        display: grid;
+        gap: var(--sp-md);
+        align-items: center;
+    }
+
+    .ti-pair__pain {
+        font-size: var(--fs-lead);
+        font-weight: 300;
+        color: var(--ti-text-muted);
+        font-style: italic;
+        max-width: 30ch;
+    }
+
+    .ti-pair__pain::before {
+        content: '“';
+    }
+
+    .ti-pair__pain::after {
+        content: '”';
+    }
+
+    .ti-pair__solution {
+        color: var(--ti-text);
+        border-left: 1px solid var(--ti-border-strong);
+        padding-left: var(--sp-md);
+    }
+
+    .ti-pair__solution > * + * {
+        margin-top: var(--sp-xs);
+    }
+
+    .ti-pair__icon {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-pair__solution-title {
+        color: var(--ti-gold-bright);
+    }
+
+    @media (width >= 48rem) {
+        .ti-pair {
+            grid-template-columns: 1fr 1.15fr;
+            gap: var(--sp-xl);
+        }
+
+        .ti-pair--flip {
+            grid-template-columns: 1.15fr 1fr;
+        }
+
+        .ti-pair--flip .ti-pair__pain {
+            grid-column: 2;
+            grid-row: 1;
+            justify-self: end;
+            text-align: right;
+        }
+
+        .ti-pair--flip .ti-pair__solution {
+            grid-column: 1;
+            grid-row: 1;
+            border-left: 0;
+            border-right: 1px solid var(--ti-border-strong);
+            padding-left: 0;
+            padding-right: var(--sp-md);
+            text-align: right;
+        }
+    }
+</style>

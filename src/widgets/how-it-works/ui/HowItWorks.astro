@@ -1,0 +1,293 @@
+---
+import {Icon} from '@shared/ui/icon';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {how} = t;
+
+const SHORTCUT_STEPS = new Set([0, 1]);
+---
+
+<section class="ti-section ti-section--alt" id={how.id} aria-labelledby="how-title">
+    <div class="ti-container">
+        <p class="ti-label">{how.eyebrow}</p>
+        <h2 id="how-title" class="ti-display ti-h2 ti-how__title">{how.title}</h2>
+        <p class="ti-lead ti-how__lead">{how.lead}</p>
+
+        <ol class="ti-steps">
+            {
+                how.steps.map((step, index) => {
+                    const isAnchor = index === how.steps.length - 1;
+                    return (
+                        <li class:list={['ti-step', isAnchor && 'ti-step--anchor', 'ti-reveal']}>
+                            <div class="ti-step__head">
+                                <span class="ti-step__n ti-display ti-numeric">{step.n}</span>
+
+                                {!isAnchor && <span class="ti-step__line" aria-hidden="true" />}
+                            </div>
+
+                            <div class="ti-step__body">
+                                <h3 class="ti-h3">{step.title}</h3>
+                                <p class="ti-small ti-muted">{step.body}</p>
+
+                                {SHORTCUT_STEPS.has(index) && (
+                                    <p class="ti-step__shortcut ti-caption">{how.shortcut}</p>
+                                )}
+
+                                {isAnchor && (
+                                    /* Fragmento Ghost Mode Activo en miniatura (Fila 2) */
+                                    <div class="ti-ghostmini">
+                                        <div class="ti-ghostmini__cols" aria-hidden="true">
+                                            <span>{how.ghostPreview.colSet}</span>
+                                            <span class="ti-col--gold">
+                                                {how.ghostPreview.colWeight}
+                                            </span>
+                                            <span>{how.ghostPreview.colReps}</span>
+                                            <span />
+                                        </div>
+
+                                        <div class="ti-ghostmini__chip" aria-hidden="true">
+                                            <Icon name="sparkles" />
+                                            <span>{how.ghostPreview.chipLabel}</span>
+                                        </div>
+
+                                        <div class="ti-ghostmini__row">
+                                            <span class="ti-ghostmini__num ti-numeric">
+                                                {how.ghostPreview.setNumber}
+                                            </span>
+                                            <div class="ti-ghostmini__box">
+                                                <span class="ti-numeric">
+                                                    {how.ghostPreview.weightValue}
+                                                </span>
+                                            </div>
+                                            <div class="ti-ghostmini__box">
+                                                <span class="ti-numeric">
+                                                    {how.ghostPreview.repsValue}
+                                                </span>
+                                            </div>
+                                            <div class="ti-ghostmini__check" aria-hidden="true">
+                                                <Icon name="check" />
+                                            </div>
+                                        </div>
+
+                                        <p class="ti-sr-only">{how.ghostPreview.sr}</p>
+                                    </div>
+                                )}
+                            </div>
+                        </li>
+                    );
+                })
+            }
+        </ol>
+    </div>
+</section>
+
+<style>
+    .ti-how__title {
+        margin-top: var(--sp-xs);
+    }
+
+    .ti-how__lead {
+        margin-top: var(--sp-sm);
+        margin-bottom: var(--sp-2xl);
+    }
+
+    .ti-steps {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        gap: 0;
+    }
+
+    .ti-step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: var(--sp-md);
+    }
+
+    .ti-step__head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--sp-xs);
+    }
+
+    .ti-step__n {
+        font-size: var(--fs-h2);
+        color: var(--ti-gold-deep);
+        line-height: 1;
+    }
+
+    .ti-step__line {
+        width: 1px;
+        flex: 1;
+        min-height: var(--sp-lg);
+        background: var(--ti-grad-metal);
+        opacity: 0.6;
+    }
+
+    .ti-step__body {
+        padding-bottom: var(--sp-xl);
+    }
+
+    .ti-step__body > * + * {
+        margin-top: var(--sp-xs);
+    }
+
+    .ti-step__shortcut {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-step--anchor .ti-step__body {
+        background-color: var(--ti-surface);
+        border: 1px solid var(--ti-border-strong);
+        border-radius: var(--radius-card);
+        padding: var(--sp-md);
+    }
+
+    .ti-step--anchor .ti-step__n {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-ghostmini {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: var(--sp-sm);
+        padding-top: var(--sp-sm);
+        border-top: 1px solid var(--ti-border-hair);
+    }
+
+    .ti-ghostmini__cols {
+        display: grid;
+        grid-template-columns: 36px 1fr 1fr 38px;
+        gap: var(--sp-xs);
+        align-items: center;
+        text-transform: uppercase;
+    }
+
+    .ti-ghostmini__cols span {
+        font-size: 0.625rem !important;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--ti-text-muted);
+        text-align: center;
+        line-height: 1;
+        opacity: 0.75;
+    }
+
+    .ti-ghostmini__cols .ti-col--gold {
+        color: var(--ti-gold-bright) !important;
+        opacity: 0.95;
+    }
+
+    .ti-ghostmini__chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.6875rem;
+        font-weight: 500;
+        color: var(--ti-text-muted);
+        background: rgb(255 255 255 / 4%);
+        border: 1px solid rgb(255 255 255 / 8%);
+        padding: 2px 8px;
+        border-radius: var(--radius-pill);
+        align-self: flex-start;
+        margin-left: 44px;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    .ti-ghostmini__chip :global(.ti-icon) {
+        width: 11px;
+        height: 11px;
+        flex-shrink: 0;
+        opacity: 0.7;
+    }
+
+    .ti-ghostmini__row {
+        display: grid;
+        grid-template-columns: 36px 1fr 1fr 38px;
+        gap: var(--sp-xs);
+        align-items: center;
+    }
+
+    .ti-ghostmini__num {
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: var(--ti-gold-bright);
+        text-align: center;
+    }
+
+    .ti-ghostmini__box {
+        background: #121212;
+        border: 1px solid rgb(255 255 255 / 8%);
+        border-radius: 8px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--ti-text);
+    }
+
+    .ti-ghostmini__check {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--ti-grad-primary);
+        color: var(--ti-surface);
+        display: grid;
+        place-items: center;
+        justify-self: center;
+        box-shadow: 0 0 12px rgb(230 194 128 / 25%);
+    }
+
+    .ti-ghostmini__check :global(.ti-icon) {
+        width: 18px;
+        height: 18px;
+        stroke-width: 2.5;
+    }
+
+    @media (width <= 24rem) {
+        .ti-ghostmini__chip {
+            margin-left: 0;
+        }
+    }
+
+    @media (width >= 60rem) {
+        .ti-steps {
+            grid-template-columns: 1fr 1fr 1fr 1.35fr;
+            column-gap: var(--sp-lg);
+        }
+
+        .ti-step {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto 1fr;
+            align-content: start;
+            row-gap: var(--sp-sm);
+        }
+
+        .ti-step__head {
+            flex-direction: row;
+            align-items: center;
+            gap: var(--sp-sm);
+        }
+
+        .ti-step__line {
+            width: auto;
+            height: 1px;
+            min-height: 0;
+        }
+
+        .ti-step__body {
+            padding-bottom: 0;
+        }
+    }
+</style>

@@ -1,0 +1,64 @@
+---
+import {APPSTORE_URL} from '@shared/config/site';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+    class?: string;
+
+    priority?: boolean;
+}
+
+const {locale, class: className, priority = false} = Astro.props;
+const t = useTranslations(locale);
+
+const HEIGHT = 48;
+const WIDTH = 144;
+---
+
+{
+    APPSTORE_URL ? (
+        <a class:list={['ti-appstore', className]} href={APPSTORE_URL} rel="noopener">
+            <img
+                src={`/badges/app-store-${locale}.svg`}
+                alt={t.cta.appStoreAlt}
+                width={WIDTH}
+                height={HEIGHT}
+                loading={priority ? 'eager' : 'lazy'}
+                fetchpriority={priority ? 'high' : undefined}
+                decoding="async"
+            />
+        </a>
+    ) : (
+        <p class:list={['ti-appstore ti-appstore--pending', className]}>{t.cta.appStoreSoon}</p>
+    )
+}
+
+<style>
+    .ti-appstore {
+        display: inline-block;
+        padding: 12px;
+        margin: -12px;
+    }
+
+    .ti-appstore img {
+        height: 48px;
+        width: auto;
+    }
+
+    .ti-appstore--pending {
+        margin: 0;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        min-height: 48px;
+        padding-inline: var(--sp-md);
+        border: 1px solid var(--ti-border-strong);
+        border-radius: var(--radius-pill);
+        color: var(--ti-gold-bright);
+        font-size: var(--fs-caption);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-label);
+    }
+</style>

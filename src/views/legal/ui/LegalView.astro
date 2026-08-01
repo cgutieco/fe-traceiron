@@ -1,0 +1,80 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import {SiteHeader} from '@widgets/site-header';
+import {SiteFooter} from '@widgets/site-footer';
+import {Icon} from '@shared/ui/icon';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+    document: 'privacy' | 'terms';
+}
+
+const {locale, document} = Astro.props;
+const t = useTranslations(locale);
+const doc = t.legal[document];
+const canonicalPath = document === 'privacy' ? '/privacy' : '/terms';
+const title = document === 'privacy' ? t.meta.privacy.title : t.meta.terms.title;
+const description = document === 'privacy' ? t.meta.privacy.description : t.meta.terms.description;
+---
+
+<BaseLayout locale={locale} canonicalPath={canonicalPath} title={title} description={description}>
+    <SiteHeader locale={locale} canonicalPath={canonicalPath} />
+
+    <main id="main" class="ti-container ti-legal">
+        <h1 class="ti-display ti-legal__title">{doc.title}</h1>
+        <p class="ti-lead">{doc.lead}</p>
+        <p class="ti-small ti-muted ti-legal__updated">
+            <Icon name="lock" class="ti-legal__flag-icon" />
+            {t.legal.updatedLabel}: {t.legal.updatedDate}
+        </p>
+
+        {
+            doc.sections.map((section) => (
+                <section class="ti-legal__section">
+                    <h2 class="ti-h3">{section.title}</h2>
+                    {section.body.map((paragraph) => (
+                        <p class="ti-small ti-legal__paragraph">{paragraph}</p>
+                    ))}
+                </section>
+            ))
+        }
+    </main>
+
+    <SiteFooter locale={locale} canonicalPath={canonicalPath} />
+</BaseLayout>
+
+<style>
+    .ti-legal {
+        padding-block: var(--sp-xl) var(--sp-2xl);
+        max-width: 760px;
+    }
+
+    .ti-legal__title {
+        font-size: var(--fs-h1);
+        color: var(--ti-text);
+        margin-bottom: var(--sp-md);
+    }
+
+    .ti-legal__updated {
+        display: flex;
+        align-items: center;
+        gap: var(--sp-2xs);
+        margin-top: var(--sp-xs);
+    }
+
+    .ti-legal__flag-icon {
+        width: 14px;
+        height: 14px;
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-legal__section {
+        margin-top: var(--sp-xl);
+    }
+
+    .ti-legal__paragraph {
+        margin-top: var(--sp-sm);
+        color: var(--ti-text-muted);
+    }
+</style>

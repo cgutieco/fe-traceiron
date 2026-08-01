@@ -1,0 +1,134 @@
+---
+import '@shared/styles/tokens.css';
+import '@shared/styles/fonts.css';
+import '@shared/styles/base.css';
+
+import {alternatesFor, localizePath, ogLocale, useTranslations, type Locale} from '@shared/i18n';
+import {
+    APPSTORE_ID,
+    OG_IMAGE,
+    OG_IMAGE_HEIGHT,
+    OG_IMAGE_WIDTH,
+    SITE_URL
+} from '@shared/config/site';
+
+interface Props {
+    locale: Locale;
+
+    canonicalPath: string;
+    title: string;
+    description: string;
+
+    noindex?: boolean;
+
+    alternates?: boolean;
+    ogImage?: string;
+    ogImageAlt?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+
+    appArgument?: string;
+
+    jsonLd?: Record<string, unknown>[];
+    bodyClass?: string;
+}
+
+const {
+    locale,
+    canonicalPath,
+    title,
+    description,
+    noindex = false,
+    alternates = true,
+    ogImage = OG_IMAGE,
+    ogImageAlt,
+    ogTitle,
+    ogDescription,
+    appArgument,
+    jsonLd = [],
+    bodyClass
+} = Astro.props;
+
+const t = useTranslations(locale);
+
+const canonicalUrl = `${SITE_URL}${localizePath(canonicalPath, locale)}`;
+const alt = alternatesFor(canonicalPath, SITE_URL);
+
+// [PRV-03] Solo se emite si hay identificador real: una etiqueta con un id
+// vacío es peor que ninguna etiqueta.
+const smartBanner =
+    APPSTORE_ID && appArgument
+        ? `app-id=${APPSTORE_ID}, app-argument=${appArgument}`
+        : APPSTORE_ID
+          ? `app-id=${APPSTORE_ID}`
+          : null;
+---
+
+<!doctype html>
+<html lang={locale}>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>{title}</title>
+        <meta name="description" content={description} />
+
+        <meta name="theme-color" content="#000000" />
+
+        <link rel="canonical" href={canonicalUrl} />
+
+        {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+        {
+            alternates && (
+                <>
+                    <link rel="alternate" hreflang="en" href={alt.en} />
+                    <link rel="alternate" hreflang="es" href={alt.es} />
+                    <link rel="alternate" hreflang="x-default" href={alt.xDefault} />
+                </>
+            )
+        }
+
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="TraceIron" />
+        <meta property="og:locale" content={ogLocale(locale)} />
+
+        <meta property="og:locale:alternate" content={ogLocale(locale === 'en' ? 'es' : 'en')} />
+        <meta property="og:title" content={ogTitle ?? title} />
+        <meta property="og:description" content={ogDescription ?? description} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content={String(OG_IMAGE_WIDTH)} />
+        <meta property="og:image:height" content={String(OG_IMAGE_HEIGHT)} />
+        <meta property="og:image:alt" content={ogImageAlt ?? t.meta.ogAlt} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={ogTitle ?? title} />
+        <meta name="twitter:description" content={ogDescription ?? description} />
+        <meta name="twitter:image" content={ogImage} />
+
+        {smartBanner && <meta name="apple-itunes-app" content={smartBanner} />}
+
+        <link
+            rel="preload"
+            href="/fonts/cinzel/variable/cinzel-latin-wght-normal.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+        />
+
+        <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        {
+            jsonLd.map((block) => (
+                <script is:inline type="application/ld+json" set:html={JSON.stringify(block)} />
+            ))
+        }
+    </head>
+
+    <body class={bodyClass}>
+        <a class="ti-skip" href="#main">{t.a11y.skip}</a>
+        <slot />
+    </body>
+</html>

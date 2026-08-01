@@ -1,0 +1,489 @@
+{
+    "lang": {
+        "en": "English",
+        "es": "Español"
+    },
+
+    "a11y": {
+        "skip": "Skip to content",
+        "langLabel": "Language",
+        "openMenu": "Download"
+    },
+
+    "meta": {
+        "home": {
+            "title": "TraceIron — Strength Training for iPhone, Measured in Iron",
+            "description": "Track every set with the ghost of your last session projected over it. Native iPhone, Apple Watch and Dynamic Island. Unlimited free logging."
+        },
+        "privacy": {
+            "title": "Privacy Policy: Your Data Stays in Your iCloud — TraceIron",
+            "description": "How TraceIron handles your training data. No servers of our own: everything lives on your device and in your own private iCloud, and never passes through us."
+        },
+        "terms": {
+            "title": "Terms of Service and Licence to Use the App — TraceIron",
+            "description": "The terms governing your use of TraceIron, its Premium subscription, one-time purchases and shared content, for iPhone, iPad and Apple Watch."
+        },
+        "notFound": {
+            "title": "Page Not Found — Back to Strength Training — TraceIron",
+            "description": "This page does not exist. Return to TraceIron and track your strength training with the ghost of your last session projected over every set."
+        },
+        "ogAlt": "The TraceIron wordmark in gold on black"
+    },
+
+    "nav": {
+        "home": "Home",
+        "download": "Download"
+    },
+
+    "hero": {
+        "lead": "Every set you lift, weighed against the one before it."
+    },
+
+    "how": {
+        "id": "how-it-works",
+        "eyebrow": "How it works",
+        "title": "From nothing to competing with yourself",
+        "lead": "Four steps. No blank page, no setup ritual, no spreadsheet.",
+        "steps": [
+            {
+                "n": "01",
+                "title": "Pick or create an exercise",
+                "body": "Choose from our predefined catalogue, sorted by muscle group — or create your own in seconds."
+            },
+            {
+                "n": "02",
+                "title": "Build it into a routine",
+                "body": "Order sets and rest times — or start from one of our predefined routines and make it yours."
+            },
+            {
+                "n": "03",
+                "title": "Schedule it, or start right now",
+                "body": "Put it on the calendar with a reminder, or begin training this second."
+            },
+            {
+                "n": "04",
+                "title": "Next time, compete with yourself",
+                "body": "Your last session appears projected over the current one. That is Ghost Mode."
+            }
+        ],
+        "shortcut": "Or use one of our predefined packs.",
+        "ghostPreview": {
+            "colSet": "SET",
+            "colWeight": "WEIGHT (KG)",
+            "colReps": "REPS",
+            "chipLabel": "Previous record: 40 kg × 12 reps",
+            "setNumber": "3",
+            "weightValue": "82.5",
+            "repsValue": "8",
+            "sr": "Previous session: 40 kilograms for 12 reps. Today: 82.5 kilograms for 8 reps."
+        }
+    },
+
+    "ghost": {
+        "id": "ghost-mode",
+        "eyebrow": "Ghost Mode",
+        "title": "Never wonder how much you lifted last time",
+        "body": "TraceIron projects the data from your last completed session directly over the set you are working on. The number to beat is already on screen — you do not have to remember it, look it up, or trust it to a notebook.",
+        "demo": {
+            "exercise": "Bench Press",
+            "category": "Chest",
+            "rest": "1m 30s rest",
+            "colSet": "SET",
+            "colWeight": "WEIGHT (KG)",
+            "colReps": "REPS",
+            "ghostLabel": "Previous record",
+            "surpassedLabel": "Record beaten",
+            "btnWarmup": "Warm-up",
+            "btnSet": "Set",
+            "btnDropset": "Dropset",
+            "disclaimer": "* Visual representation of the actual iOS app experience.",
+            "srText": "Ghost Mode demonstration on Bench Press projecting previous set records of 40 kg × 12 reps, 50 kg × 12 reps, and beating the record with 52.5 kg × 12 reps.",
+            "surpassedWeightValue": "52.5"
+        }
+    },
+
+    "pain": {
+        "id": "pain-solution",
+        "eyebrow": "Why it exists",
+        "title": "Built against three specific frustrations",
+        "pairs": [
+            {
+                "pillar": "ghost",
+                "pain": "I don't know if I'm actually progressing or just repeating the same session.",
+                "solutionTitle": "Ghost Mode and 1RM analytics",
+                "solution": "Your previous numbers sit on top of the current set, and estimated one-rep max is computed from your real history. Progress stops being a feeling."
+            },
+            {
+                "pillar": "haptic",
+                "pain": "Logging sets on my phone between rests pulls me out of the workout.",
+                "solutionTitle": "One-handed haptic check-in",
+                "solution": "Confirm a set with one thumb and feel it land. Or don't touch the phone at all: check in from Apple Watch, the Dynamic Island, or a Lock Screen widget."
+            },
+            {
+                "pillar": "context",
+                "pain": "My data is held hostage by an app that charges for everything.",
+                "solutionTitle": "Your data, your iCloud",
+                "solution": "Unlimited workout and set logging on the free plan, synced through your own private iCloud. Premium adds export to JSON, CSV and Excel."
+            }
+        ]
+    },
+
+    "showcase": {
+        "id": "showcase",
+        "eyebrow": "The product",
+        "title": "Finished, not promised",
+        "lead": "Real screens, shot on iPhone with the Ivory & Gold theme active.",
+        "shots": [
+            {
+                "alt": "Active workout screen showing the current set with the previous session's weight and reps projected underneath in faded type, and a circular check button.",
+                "caption": "Active session",
+                "body": "The set in progress, with the ghost of your last one underneath and the rest timer in monospaced digits."
+            },
+            {
+                "alt": "Routine repository listing saved routines and exercises, with a segmented control and a horizontal bar of muscle group filter pills.",
+                "caption": "Repository",
+                "body": "Every routine and exercise, filterable by muscle group and searchable in your device's language."
+            },
+            {
+                "alt": "Monthly calendar grid with scheduled training sessions marked on specific days.",
+                "caption": "Calendar",
+                "body": "Plan the week ahead, with recurrence patterns and local reminders."
+            },
+            {
+                "alt": "Exercise detail screen for Squat showing estimated 1RM progress chart, weekly volume, and set history.",
+                "caption": "Exercise details",
+                "body": "Track your estimated 1RM progression, weekly volume totals, and detailed set history."
+            }
+        ]
+    },
+
+    "ecosystem": {
+        "id": "ecosystem",
+        "eyebrow": "Apple ecosystem",
+        "title": "Native where it counts",
+        "items": {
+            "watch": {
+                "title": "Apple Watch",
+                "body": "The watch mirrors the session on your iPhone in real time: current exercise, set and rest timer. Check in a set from your wrist and feel the haptic confirmation. Finish the workout without taking the phone out of your pocket."
+            },
+            "liveActivity": {
+                "title": "Live Activities & Dynamic Island",
+                "body": "Rest timer and session clock on the Lock Screen, with Skip Rest and Pause as interactive controls."
+            },
+            "widgets": {
+                "title": "Lock Screen widgets",
+                "body": "Your session at a glance, without unlocking."
+            },
+            "cloudkit": {
+                "title": "iCloud sync",
+                "body": "Offline-first on device, synced through your own private iCloud. No server of ours in the middle."
+            }
+        }
+    },
+
+    "pricing": {
+        "id": "pricing",
+        "eyebrow": "Pricing",
+        "title": "Free is genuinely usable",
+        "free": {
+            "title": "What the free plan includes",
+            "items": [
+                "Unlimited workout and set logging",
+                "Ghost Mode",
+                "Apple Watch",
+                "Live Activities and Dynamic Island",
+                "Lock Screen widgets",
+                "1RM analytics",
+                "iCloud sync",
+                "Sharing routines and exercises one by one",
+                "Importing any link you receive"
+            ]
+        },
+        "limits": {
+            "title": "Extra tools for when you want to go further",
+            "lead": "The free plan supports your daily workouts with no time limits or logging caps. As your library grows or you want to get more out of your data, Premium unlocks these advantages:",
+            "items": [
+                "Unlimited routines to organize all your programs (free plan includes 3)",
+                "Full data export to JSON, CSV, and Excel",
+                "Share full routine packs and collections with a single link",
+                "Personalize the app with the exclusive Ivory & Gold theme"
+            ]
+        },
+        "premiumTitle": "Premium",
+        "premiumBody": "Unlimited routines, export your data as JSON/CSV/Excel, bulk share and export your routines and exercises, and the exclusive Ivory & Gold theme.",
+        "plans": {
+            "monthly": {
+                "name": "Monthly",
+                "price": "4.99",
+                "currency": "$",
+                "subtitle": "Billed monthly. Cancel anytime."
+            },
+            "annual": {
+                "name": "Annual",
+                "price": "29.99",
+                "currency": "$",
+                "subtitle": "Billed annually.",
+                "badge": "Best value",
+                "trial": "7-day free trial"
+            },
+            "lifetime": {
+                "name": "Lifetime",
+                "price": "79.99",
+                "currency": "$",
+                "subtitle": "One-time purchase. Premium access forever.",
+                "badge": "One-time"
+            }
+        },
+        "disclaimer": "Prices in USD. They may vary by region and App Store taxes."
+    },
+
+    "faq": {
+        "id": "faq",
+        "eyebrow": "Before you download",
+        "title": "Straight answers",
+        "items": [
+            {
+                "q": "Do I need to pay to use TraceIron?",
+                "a": "No. You can log workouts and sets without limit, with Ghost Mode, Apple Watch, Live Activities and iCloud sync, for free. The free plan allows up to 3 routines; Premium makes them unlimited."
+            },
+            {
+                "q": "Does it work offline?",
+                "a": "Yes. TraceIron is offline-first: everything is saved on the device, and iCloud syncs when there is a connection."
+            },
+            {
+                "q": "Where is my data stored?",
+                "a": "On your device and in your own private iCloud. TraceIron has no server of its own and does not access your workouts."
+            },
+            {
+                "q": "Can I export my data?",
+                "a": "Yes, as JSON, CSV and Excel. Export is part of Premium."
+            },
+            {
+                "q": "Do I need an Apple Watch?",
+                "a": "No. It is optional, and there is no additional cost if you already own one."
+            },
+            {
+                "q": "Can I share a routine with someone who doesn't have the app?",
+                "a": "Yes. They get a web preview with the full content, and can import it for free once they install the app."
+            },
+            {
+                "q": "Does the subscription renew automatically?",
+                "a": "Monthly and annual renew automatically and you can cancel them whenever you want. Lifetime is a one-time payment that does not expire."
+            },
+            {
+                "q": "Is there an Android or web version?",
+                "a": "No. TraceIron is exclusively native to the Apple ecosystem; that is a product decision, not a temporary limitation."
+            }
+        ]
+    },
+
+    "closing": {
+        "id": "closing",
+        "title": "Your next session already has a number to beat"
+    },
+
+    "footer": {
+        "privacy": "Privacy",
+        "terms": "Terms",
+        "contact": "Contact",
+        "copyright": "© {year} TraceIron. All rights reserved.",
+        "appleNotice": "Apple, the Apple logo, iPhone, Apple Watch and App Store are trademarks of Apple Inc., registered in the U.S. and other countries."
+    },
+
+    "cta": {
+        "appStoreAlt": "Download on the App Store",
+        "appStoreSoon": "Coming soon to the App Store",
+        "openInApp": "Open in TraceIron",
+        "backHome": "Go to TraceIron"
+    },
+
+    "share": {
+        "type": {
+            "routine": "Routine",
+            "exercise": "Exercise",
+            "pack": "Collection"
+        },
+        "sharedBy": "Shared by",
+        "metrics": {
+            "exercises": "Exercises",
+            "sets": "Total sets",
+            "rest": "Avg. rest",
+            "routines": "Routines",
+            "restUnit": "s"
+        },
+        "list": {
+            "setsLabel": "sets",
+            "restLabel": "rest",
+            "isometric": "Isometric",
+            "more": "+{count} more exercises",
+            "truncated": "This collection is larger than what we can show here. Open it in the app to see everything.",
+            "emptyRoutine": "This routine has no exercises yet."
+        },
+        "cta": {
+            "primary": "Open in TraceIron",
+            "hint": "Free to import. No account required."
+        },
+        "meta": {
+            "titleFormat": "{title} — TraceIron",
+            "fallbackTitle": "Shared content — TraceIron",
+            "fallbackDescription": "Open this link in TraceIron to import it into your library. Free to import, no account required.",
+            "summarySets": "{exercises} exercises · {sets} sets",
+            "summaryExercises": "{exercises} exercises"
+        },
+        "states": {
+            "badId": {
+                "title": "This link isn't valid",
+                "body": "The address is incomplete or was mistyped along the way. Ask whoever sent it to share it again."
+            },
+            "notFound": {
+                "title": "This link has expired or no longer exists",
+                "body": "Shared content does not stay available forever. Ask whoever sent it to share it again."
+            },
+            "malformed": {
+                "title": "We couldn't display this content",
+                "body": "The link is valid, but we cannot show a preview of it here. Open it in TraceIron to import it."
+            },
+            "serviceDown": {
+                "title": "We couldn't display this content",
+                "body": "Try again in a few minutes, or open the link in TraceIron to import it."
+            }
+        }
+    },
+
+    "notFound": {
+        "code": "404",
+        "title": "There's nothing at this address",
+        "body": "The page you were looking for does not exist, or it moved."
+    },
+
+    "legal": {
+        "updatedLabel": "Last updated",
+        "updatedDate": "July 29, 2026",
+        "privacy": {
+            "title": "Privacy Policy",
+            "lead": "TraceIron has no server of its own. Your workouts live on your device and in your own private iCloud.",
+            "sections": [
+                {
+                    "title": "1. Data we handle",
+                    "body": [
+                        "Data you enter yourself: routine and exercise names, sets, weight, reps, rest times, and notes.",
+                        "Health data via HealthKit, only if you grant permission: the duration and intensity of your workout sessions, which TraceIron records in Apple's Health app.",
+                        "Technical identifiers generated on your own device (UUIDs) to relate your routines, exercises, and sets to one another. They are not tied to your real name or to any advertising identifier.",
+                        "We do not collect third-party analytics, do not show ads, and do not sell or share your data with anyone."
+                    ]
+                },
+                {
+                    "title": "2. Where it is stored",
+                    "body": [
+                        "Locally, on your iPhone, iPad, and Apple Watch, via SwiftData.",
+                        "In your own private iCloud, through automatic sync with CloudKit tied to your own Apple ID. Apple encrypts that data in transit and at rest; TraceIron has no access to it and keeps no parallel copy on any server of our own.",
+                        "TraceIron does not operate any server or centralized database under our control, except for the specific case described in section 4 (Shared content)."
+                    ]
+                },
+                {
+                    "title": "3. HealthKit",
+                    "body": [
+                        "If you grant permission, TraceIron records your workout sessions in the Health app so they show up alongside the rest of your physical activity.",
+                        "We never sell or share health data with advertisers, data brokers, or any other third party, in line with Apple's HealthKit policies.",
+                        "You can revoke this permission at any time from Settings → Privacy & Security → Health → TraceIron. The app keeps working without it; it simply stops recording your sessions in Health."
+                    ]
+                },
+                {
+                    "title": "4. Shared content",
+                    "body": [
+                        "When you use the share feature (swipe-to-share, or batch export), TraceIron uploads a copy of that routine or exercise to Apple's public CloudKit database, generating a short link (e.g. traceiron.com/r/abc123).",
+                        "That content is accessible to anyone who receives the link, not only to the person importing it; it is not indexed by search engines, but it is not private either. Avoid putting personal or sensitive information in a routine's or exercise's name or notes before sharing it.",
+                        "Sharing is always an explicit action on your part (never automatic), and anyone importing a link sees nothing about your identity beyond the content you chose to share.",
+                        "You can ask us to remove already-shared content by writing to the contact address in section 7."
+                    ]
+                },
+                {
+                    "title": "5. Purchases and subscriptions",
+                    "body": [
+                        "All payments (monthly or annual Premium subscription, one-time Lifetime purchase, and individual themes such as Toxic or Founder) are processed entirely through Apple via StoreKit 2 and the App Store.",
+                        "TraceIron never sees, receives, or stores your card or payment details. We only check your purchase status (entitlement) to unlock the corresponding features.",
+                        "Cancellations, refunds, and subscription management happen directly with Apple, from Settings → [your name] → Subscriptions on your device."
+                    ]
+                },
+                {
+                    "title": "6. Your rights",
+                    "body": [
+                        "In line with Law No. 29733 (Peru's Personal Data Protection Law) and equivalent principles in other jurisdictions, you have the right to access, rectify, cancel, and object to the processing of your data.",
+                        "Since your data lives on your device and in your own iCloud, you have direct control over nearly all of it: deleting the app removes local data, and you can manage or delete your iCloud data from your Apple account settings.",
+                        "For content you've already uploaded to the public CloudKit database by sharing it (section 4), or for any other request about your data, contact us using the address in section 7."
+                    ]
+                },
+                {
+                    "title": "7. Contact",
+                    "body": [
+                        "For any question about this Privacy Policy or about your data, write to support@traceiron.com. We reply personally, since TraceIron is built by a single developer."
+                    ]
+                }
+            ]
+        },
+        "terms": {
+            "title": "Terms of Service",
+            "lead": "The terms governing your use of TraceIron on iPhone, iPad and Apple Watch.",
+            "sections": [
+                {
+                    "title": "1. Acceptance of terms",
+                    "body": [
+                        "By downloading, installing, or using TraceIron you accept these terms. If you disagree with any of them, you should not use the app.",
+                        "TraceIron is intended for a general audience and is not specifically directed at children under 13. If you are a minor under the laws of your country of residence, you need the consent of a parent or legal guardian to use it."
+                    ]
+                },
+                {
+                    "title": "2. Licence to use",
+                    "body": [
+                        "We grant you a personal, non-exclusive, non-transferable, revocable licence to use TraceIron on Apple devices you own or control, subject to Apple's standard App Store Usage Rules.",
+                        "You may not reverse-engineer, redistribute, resell, or sublicense the app or any part of its code."
+                    ]
+                },
+                {
+                    "title": "3. Subscriptions and one-time purchases",
+                    "body": [
+                        "TraceIron offers a Premium subscription (monthly or annual, the latter with a 7-day free trial) and a one-time Lifetime purchase, plus individual visual themes (Toxic, Founder) as one-time purchases.",
+                        "The price, duration, and exact terms of each plan are shown in the app before you confirm a purchase, and are always managed through StoreKit 2 / the App Store."
+                    ]
+                },
+                {
+                    "title": "4. Renewal and cancellation",
+                    "body": [
+                        "Monthly and annual subscriptions renew automatically at the end of each period, unless cancelled at least 24 hours before the current period ends.",
+                        "The annual plan's free trial converts automatically into a paid subscription at the end of the trial, unless cancelled beforehand.",
+                        "You can manage or cancel your subscription at any time from Settings → [your name] → Subscriptions on your Apple device."
+                    ]
+                },
+                {
+                    "title": "5. Shared content",
+                    "body": [
+                        "You are solely responsible for the content you choose to share (routine and exercise names, and any associated notes). By sharing, you acknowledge that content becomes accessible via a public link to anyone who receives it.",
+                        "You must not share content that infringes on the rights of others, contains sensitive information about another person, or is offensive, unlawful, or misleading."
+                    ]
+                },
+                {
+                    "title": "6. Health disclaimer",
+                    "body": [
+                        "TraceIron is a workout tracking tool, not a medical service or a substitute for professional health advice.",
+                        "Consult a physician before starting any exercise program, especially if you have a pre-existing condition. 1RM estimates and Ghost Mode projections are informational and do not replace supervision by a qualified professional.",
+                        "You use the app and the information it provides at your own discretion and risk."
+                    ]
+                },
+                {
+                    "title": "7. Limitation of liability",
+                    "body": [
+                        "TraceIron is provided \"as is\" and \"as available\", without warranties of any kind. To the maximum extent permitted by law, we are not liable for indirect damages, data loss, or injuries resulting from use of the app or the information it contains.",
+                        "Nothing in these terms limits any non-waivable rights you may have under the consumer protection laws of your country of residence."
+                    ]
+                },
+                {
+                    "title": "8. Contact",
+                    "body": [
+                        "These terms are governed by the laws of the Republic of Peru, without prejudice to any rights you may have under the laws of your country of residence.",
+                        "We may update these terms from time to time; material changes will be reflected on this page with a new update date. For any question, write to support@traceiron.com."
+                    ]
+                }
+            ]
+        }
+    }
+}

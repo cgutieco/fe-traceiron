@@ -1,0 +1,30 @@
+{
+    "extends": ["stylelint-config-standard"],
+    "overrides": [
+        {
+            "files": ["**/*.astro"],
+            "customSyntax": "postcss-html"
+        }
+    ],
+    "rules": {
+        "selector-pseudo-class-no-unknown": [
+            true,
+            {
+                "ignorePseudoClasses": ["global"]
+            }
+        ],
+        "selector-class-pattern": [
+            "^ti-[a-z0-9]+(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$",
+            {
+                "message": "Class names must follow BEM pattern with ti- prefix (e.g., .ti-card, .ti-card__header, .ti-btn--primary)"
+            }
+        ],
+        "declaration-property-value-disallowed-list": {
+            "backdrop-filter": ["/./"],
+            "/^background/": [
+                "/blue|indigo|violet|cyan|#0000ff|#00f|#4b0082|#ee82ee|#00ffff|#0ff/i"
+            ],
+            "color": ["/blue|indigo|violet|cyan|#0000ff|#00f|#4b0082|#ee82ee|#00ffff|#0ff/i"]
+        }
+    }
+}

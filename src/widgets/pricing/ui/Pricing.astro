@@ -1,0 +1,218 @@
+---
+import {AppStoreBadge} from '@shared/ui/app-store-badge';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {pricing} = t;
+
+const PLAN_ORDER = [
+    'monthly',
+    'annual',
+    'lifetime'
+] as const satisfies readonly (keyof typeof pricing.plans)[];
+---
+
+<section class="ti-section ti-section--alt" id={pricing.id} aria-labelledby="pricing-title">
+    <div class="ti-container">
+        <p class="ti-label">{pricing.eyebrow}</p>
+        <h2 id="pricing-title" class="ti-display ti-h2 ti-price__title">
+            {pricing.title}
+        </h2>
+
+        <div class="ti-free ti-reveal">
+            <h3 class="ti-h3 ti-free__title">{pricing.free.title}</h3>
+            <ul class="ti-free__items">
+                {pricing.free.items.map((item) => <li class="ti-pill">{item}</li>)}
+            </ul>
+        </div>
+
+        <div class="ti-limits ti-reveal">
+            <h3 class="ti-h3 ti-limits__title">{pricing.limits.title}</h3>
+            <p class="ti-small ti-muted">{pricing.limits.lead}</p>
+            <ul class="ti-limits__items">
+                {pricing.limits.items.map((item) => <li class="ti-small">{item}</li>)}
+            </ul>
+        </div>
+
+        <div class="ti-plans">
+            {
+                PLAN_ORDER.map((key) => {
+                    const plan = pricing.plans[key];
+                    const featured = key === 'annual';
+                    const badge = 'badge' in plan ? plan.badge : null;
+                    const trial = 'trial' in plan ? plan.trial : null;
+
+                    return (
+                        <article
+                            class:list={[
+                                'ti-card',
+                                'ti-plan',
+                                featured && 'ti-plan--featured',
+                                'ti-reveal'
+                            ]}
+                        >
+                            <header class="ti-plan__head">
+                                <h3 class="ti-h3">{plan.name}</h3>
+                                {badge && <span class="ti-pill ti-plan__badge">{badge}</span>}
+                            </header>
+
+                            <p class="ti-plan__price ti-display ti-numeric">
+                                <span class="ti-plan__currency">{plan.currency}</span>
+                                {plan.price}
+                            </p>
+
+                            <p class="ti-small ti-muted">{plan.subtitle}</p>
+                            {trial && <p class="ti-small ti-plan__trial">{trial}</p>}
+
+                            {featured && (
+                                <div class="ti-plan__cta">
+                                    <AppStoreBadge locale={locale} />
+                                </div>
+                            )}
+                        </article>
+                    );
+                })
+            }
+        </div>
+
+        <p class="ti-small ti-price__benefits">
+            <strong class="ti-price__premium">{pricing.premiumTitle}</strong>
+            {' — '}{pricing.premiumBody}
+        </p>
+
+        <p class="ti-caption ti-muted ti-price__disclaimer">{pricing.disclaimer}</p>
+    </div>
+</section>
+
+<style>
+    .ti-price__title {
+        margin-top: var(--sp-xs);
+        margin-bottom: var(--sp-xl);
+    }
+
+    .ti-free__title {
+        color: var(--ti-gold-bright);
+        margin-bottom: var(--sp-sm);
+    }
+
+    .ti-free__items {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--sp-xs);
+    }
+
+    .ti-free__items .ti-pill {
+        color: var(--ti-text);
+        border-color: var(--ti-border-strong);
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 500;
+        padding: var(--sp-2xs) var(--sp-sm);
+    }
+
+    .ti-limits {
+        margin-top: var(--sp-xl);
+        padding: var(--sp-md);
+        border: 1px solid var(--ti-border);
+        border-radius: var(--radius-card);
+        background-color: var(--ti-elev-2);
+    }
+
+    .ti-limits__title {
+        margin-bottom: var(--sp-2xs);
+    }
+
+    .ti-limits__items {
+        margin: var(--sp-sm) 0 0;
+        padding-left: var(--sp-md);
+        display: grid;
+        gap: var(--sp-2xs);
+        color: var(--ti-text);
+    }
+
+    .ti-limits__items::marker {
+        color: var(--ti-gold-deep);
+    }
+
+    .ti-plans {
+        margin-top: var(--sp-2xl);
+        display: grid;
+        gap: var(--sp-md);
+    }
+
+    @media (width >= 48rem) {
+        .ti-plans {
+            grid-template-columns: repeat(3, 1fr);
+            align-items: start;
+        }
+    }
+
+    .ti-plan {
+        display: grid;
+        gap: var(--sp-xs);
+        align-content: start;
+    }
+
+    .ti-plan--featured {
+        border-color: var(--ti-border-strong);
+        background-color: var(--ti-surface);
+    }
+
+    .ti-plan__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--sp-xs);
+    }
+
+    .ti-plan__badge {
+        color: var(--ti-gold-bright);
+        border-color: var(--ti-border-strong);
+        white-space: nowrap;
+    }
+
+    .ti-plan__price {
+        font-size: var(--fs-h2);
+        color: var(--ti-text);
+        line-height: 1;
+        margin-block: var(--sp-2xs);
+    }
+
+    .ti-plan__currency {
+        font-size: 0.5em;
+        color: var(--ti-text-muted);
+        vertical-align: 0.55em;
+        margin-right: 0.1em;
+    }
+
+    .ti-plan__trial {
+        color: var(--ti-gold-bright);
+    }
+
+    .ti-plan__cta {
+        margin-top: var(--sp-sm);
+    }
+
+    .ti-price__benefits {
+        margin-top: var(--sp-xl);
+        color: var(--ti-text-muted);
+    }
+
+    .ti-price__premium {
+        color: var(--ti-gold-bright);
+        text-transform: uppercase;
+        letter-spacing: var(--tracking-label);
+        font-size: var(--fs-caption);
+    }
+
+    .ti-price__disclaimer {
+        margin-top: var(--sp-sm);
+    }
+</style>

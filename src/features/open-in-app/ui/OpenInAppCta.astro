@@ -1,0 +1,72 @@
+---
+import {APPSTORE_URL, APP_SCHEME} from '@shared/config/site';
+import {Button} from '@shared/ui/button';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+
+    shareUrl: string;
+}
+
+const {locale, shareUrl} = Astro.props;
+const t = useTranslations(locale);
+
+const schemeTarget = APP_SCHEME ? `${APP_SCHEME.replace(/\/+$/, '')}/${shareUrl}` : '';
+---
+
+{
+    APPSTORE_URL && (
+        <div class="ti-openapp">
+            <Button
+                variant="primary"
+                href={APPSTORE_URL}
+                data-ti-open-app={schemeTarget || undefined}
+                rel="noopener"
+            >
+                {t.share.cta.primary}
+            </Button>
+            <p class="ti-caption ti-muted ti-openapp__hint">{t.share.cta.hint}</p>
+        </div>
+    )
+}
+
+<script is:inline>
+    document.querySelectorAll('[data-ti-open-app]').forEach(function (el) {
+        el.addEventListener('click', function (event) {
+            const scheme = el.dataset.tiOpenApp;
+            if (!scheme) return;
+
+            event.preventDefault();
+            const store = el.getAttribute('href');
+
+            const timer = setTimeout(function () {
+                if (document.visibilityState === 'visible' && store) {
+                    window.location.href = store;
+                }
+            }, 1200);
+
+            document.addEventListener(
+                'visibilitychange',
+                function () {
+                    if (document.visibilityState === 'hidden') clearTimeout(timer);
+                },
+                {once: true}
+            );
+
+            window.location.href = scheme;
+        });
+    });
+</script>
+
+<style>
+    .ti-openapp {
+        display: grid;
+        gap: var(--sp-xs);
+        justify-items: start;
+    }
+
+    .ti-openapp__hint {
+        margin: 0;
+    }
+</style>

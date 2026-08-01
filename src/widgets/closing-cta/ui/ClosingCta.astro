@@ -1,0 +1,43 @@
+---
+import {Wordmark} from '@shared/ui/wordmark';
+import {AppStoreBadge} from '@shared/ui/app-store-badge';
+import {useTranslations, type Locale} from '@shared/i18n';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const {closing} = t;
+---
+
+<section class="ti-section ti-closing" id={closing.id} aria-labelledby="closing-title">
+    <div class="ti-container ti-closing__inner">
+        <Wordmark size="lg" />
+        <h2 id="closing-title" class="ti-closing__phrase">{closing.title}</h2>
+        <AppStoreBadge locale={locale} />
+    </div>
+</section>
+
+<style>
+    .ti-closing {
+        background-color: var(--ti-bg);
+        text-align: center;
+    }
+
+    .ti-closing__inner {
+        display: grid;
+        justify-items: center;
+        gap: var(--sp-lg);
+    }
+
+    .ti-closing__phrase {
+        font-size: var(--fs-h3);
+        font-weight: 400;
+        line-height: var(--lh-heading);
+        color: var(--ti-text-muted);
+        max-width: 26ch;
+        text-wrap: balance;
+    }
+</style>

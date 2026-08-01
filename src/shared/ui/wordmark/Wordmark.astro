@@ -1,0 +1,30 @@
+---
+export interface Props {
+    as?: 'h1' | 'span' | 'div';
+    size?: 'display' | 'lg' | 'sm';
+    class?: string;
+    id?: string;
+}
+
+const {as: Tag = 'span', size = 'sm', class: className, id} = Astro.props;
+---
+
+<Tag id={id} class:list={['ti-wordmark', `ti-wordmark--${size}`, className]}>TRACEIRON</Tag>
+
+<style>
+    .ti-wordmark--display {
+        font-size: var(--fs-display);
+        line-height: var(--lh-display);
+    }
+
+    .ti-wordmark--lg {
+        font-size: var(--fs-h2);
+        line-height: var(--lh-heading);
+    }
+
+    .ti-wordmark--sm {
+        font-size: var(--fs-small);
+        line-height: 1.2;
+        letter-spacing: var(--tracking-label);
+    }
+</style>

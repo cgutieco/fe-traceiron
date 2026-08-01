@@ -1,0 +1,9 @@
+---
+export const prerender = false;
+
+import {ShareView, renderShareRoute} from '@views/share';
+
+const {resolution, path} = await renderShareRoute(Astro, 'r');
+---
+
+<ShareView locale={resolution.locale} state={resolution.state} pack={resolution.pack} path={path} />

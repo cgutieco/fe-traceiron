@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["K5D5UP52UM.traceiron.TraceIronApp"],
+        "components": [
+          { "/": "/r/*", "comment": "Rutina compartida" },
+          { "/": "/routine/*", "comment": "Alias de rutina" },
+          { "/": "/e/*", "comment": "Ejercicio compartido" },
+          { "/": "/exercise/*", "comment": "Alias de ejercicio" },
+          { "/": "/pack/*", "comment": "Paquete compartido" },
+          { "/": "/library/*", "comment": "Alias de paquete" },
+          { "/": "/s/*", "comment": "Alias corto" },
+          { "/": "/share/*", "comment": "Alias de compartir" },
+          { "/": "/privacy", "exclude": true, "comment": "Legal: abrir en navegador" },
+          { "/": "/terms", "exclude": true, "comment": "Legal: abrir en navegador" },
+          { "/": "/es/*", "exclude": true, "comment": "Landing ES: navegador" },
+          { "/": "/*", "exclude": true, "comment": "Todo lo demás: navegador" }
+        ]
+      }
+    ]
+  }
+}

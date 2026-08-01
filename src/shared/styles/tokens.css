@@ -1,0 +1,64 @@
+:root {
+    --ti-bg: #000;
+    --ti-elev-1: #0a0a0a;
+    --ti-elev-2: #101010;
+    --ti-surface: #14130f;
+    --ti-gold-deep: #836c4f;
+    --ti-gold: #c3a885;
+    --ti-gold-bright: #e6c280;
+    --ti-gold-hi: #ffecc5;
+    --ti-gold-spec: #ffffe5;
+    --ti-gold-core: #d4af37;
+    --ti-text: #fdfdf7;
+    --ti-text-muted: #9e988a;
+    --ti-ghost: #5c584e;
+    --ti-border: rgb(212 175 55 / 15%);
+    --ti-border-strong: rgb(212 175 55 / 25%);
+    --ti-border-hair: rgb(212 175 55 / 8%);
+    --ti-success: #32d74b;
+    --ti-error: #ff453a;
+    --ti-grad-metal: linear-gradient(
+        168deg,
+        var(--ti-gold-hi) 0%,
+        var(--ti-gold-bright) 28%,
+        var(--ti-gold) 52%,
+        var(--ti-gold-deep) 78%,
+        var(--ti-gold-bright) 100%
+    );
+    --ti-grad-primary: linear-gradient(135deg, #e6c280 0%, #d4af37 100%);
+    --fs-display: clamp(3rem, 9vw, 7.5rem);
+    --fs-h1: clamp(2.5rem, 6vw, 5rem);
+    --fs-h2: clamp(2rem, 4.5vw, 3.5rem);
+    --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+    --fs-lead: clamp(1.125rem, 1.6vw, 1.375rem);
+    --fs-body: 1.0625rem;
+    --fs-small: 0.9375rem;
+    --fs-caption: 0.8125rem;
+    --tracking-display: 0.02em;
+    --tracking-label: 0.14em;
+    --lh-display: 0.95;
+    --lh-heading: 1.1;
+    --lh-body: 1.65;
+    --sp-2xs: 0.25rem;
+    --sp-xs: 0.5rem;
+    --sp-sm: 1rem;
+    --sp-md: 1.5rem;
+    --sp-lg: 2rem;
+    --sp-xl: 3rem;
+    --sp-2xl: 4rem;
+    --sp-3xl: 6rem;
+    --sp-4xl: 9rem;
+    --radius-card: 16px;
+    --radius-panel: 32px;
+    --radius-pill: 999px;
+    --radius-control: 12px;
+    --container-max: 1200px;
+    --gutter: clamp(1.25rem, 5vw, 4rem);
+    --section-gap: var(--sp-2xl);
+}
+
+@media (width >= 48rem) {
+    :root {
+        --section-gap: var(--sp-4xl);
+    }
+}

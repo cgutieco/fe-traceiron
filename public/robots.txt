@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Sitemap: https://traceiron.com/sitemap.xml
+
+# Las rutas de compartir (/r/, /e/, /pack/ y sus alias)
+# permanecen PERMITIDAS aquí a propósito, aunque puede parecer contradictorio
+# con su `noindex`.
+#
+# Bloquearlas en robots.txt impediría que los rastreadores de WhatsApp,
+# Facebook y Slack leyeran sus etiquetas Open Graph, y las tarjetas de vista
+# previa —el motor de adquisición orgánica del producto— dejarían de funcionar.
+#
+# La combinación correcta es: rastreo PERMITIDO + `noindex` en la propia página.
+# Los scrapers sociales generan la tarjeta y Google no indexa el contenido.

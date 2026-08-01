@@ -1,0 +1,62 @@
+---
+export type IconName =
+    | 'check'
+    | 'watch'
+    | 'smartphone'
+    | 'widgets'
+    | 'cloud'
+    | 'globe'
+    | 'arrow-right'
+    | 'arrow-down'
+    | 'lock'
+    | 'calendar'
+    | 'sparkles'
+    | 'flame'
+    | 'timer'
+    | 'pencil'
+    | 'chevron-down'
+    | 'plus';
+
+interface Props {
+    name: IconName;
+    title?: string;
+    class?: string;
+}
+
+const {name, title, class: className} = Astro.props;
+
+const PATHS: Record<IconName, string> = {
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    watch: '<circle cx="12" cy="12" r="6"/><polyline points="12 10 12 13 13 13"/><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"/><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"/>',
+    smartphone: '<rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>',
+    widgets:
+        '<rect width="18" height="7" x="3" y="3" rx="1"/><rect width="9" height="7" x="3" y="14" rx="1"/><rect width="5" height="7" x="16" y="14" rx="1"/>',
+    cloud: '<path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+    'arrow-right': '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+    'arrow-down': '<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>',
+    lock: '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    calendar:
+        '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
+    sparkles:
+        '<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>',
+    flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3Z"/>',
+    timer: '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+    pencil: '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+    'chevron-down': '<path d="m6 9 6 6 6-6"/>',
+    plus: '<path d="M5 12h14"/><path d="M12 5v14"/>'
+};
+---
+
+<svg
+    class:list={['ti-icon', className]}
+    viewBox="0 0 24 24"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    role={title ? 'img' : undefined}
+    aria-hidden={title ? undefined : 'true'}
+    focusable="false"
+>
+    {title && <title>{title}</title>}
+    <Fragment set:html={PATHS[name]} />
+</svg>
