@@ -9,8 +9,7 @@
     "kv_namespaces": [
         {
             "binding": "SESSION",
-            "id": "90edda3943214d0b81ea4ba856982e15",
-            "remote": true
+            "id": "90edda3943214d0b81ea4ba856982e15"
         }
     ]
 }
