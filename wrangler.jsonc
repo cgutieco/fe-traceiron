@@ -1,18 +1,16 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "fe-traceiron",
-	"compatibility_date": "2026-07-29",
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"vars": {
-		"CLOUDKIT_ENV": "production"
-	},
-	"kv_namespaces": [
-		{
-			"binding": "SESSION",
-			"id": "90edda3943214d0b81ea4ba856982e15",
-			"remote": true
-		}
-	]
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "fe-traceiron",
+    "compatibility_date": "2026-07-29",
+    "compatibility_flags": ["nodejs_compat"],
+    "vars": {
+        "CLOUDKIT_ENV": "production"
+    },
+    "kv_namespaces": [
+        {
+            "binding": "SESSION",
+            "id": "90edda3943214d0b81ea4ba856982e15",
+            "remote": true
+        }
+    ]
 }
