@@ -140,3 +140,5 @@ jobs:
 
             - name: Run Playwright & Axe Suite
               run: pnpm test:e2e
+              env:
+                  CLOUDFLARE_VITE_FORCE_LOCAL: 'true'
