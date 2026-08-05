@@ -81,8 +81,8 @@ Concretely: if you're writing code in `src/widgets/pricing/`, you may import `@f
   [src/entities/content-pack](../../../src/entities/content-pack) as the reference shape: `model/` (types + parsing),
   `api/` (repository interface + concrete adapter, e.g. `cloudkit-repository.ts` behind a port/adapter interface),
   `testing/` (fake repository for tests). [src/entities/support-request](../../../src/entities/support-request) is a
-  second example of the same shape with two external I/O boundaries (Turnstile verification, Resend email) instead of
-  one.
+  second example of the same shape with two external I/O boundaries (Turnstile verification, OCI Email Delivery SMTP)
+  instead of one.
 - Generic, reusable, business-agnostic primitive (design tokens, base UI atoms, i18n, config) → `shared/`.
 
 ## Lexicon: don't confuse these three
@@ -98,9 +98,9 @@ anyone reading imports.
 ## Dependency inversion (narrow scope on purpose)
 
 Only apply dependency inversion at a genuine external I/O boundary. Today there are three: CloudKit (content-pack
-lookups), Cloudflare Turnstile (bot-challenge verification), and Resend (transactional email) — the latter two back
-the `/support` contact form. Don't add DI for i18n or static config; there's no real external dependency to invert
-there.
+lookups), Cloudflare Turnstile (bot-challenge verification), and OCI Email Delivery over SMTP (transactional email) —
+the latter two back the `/support` contact form. Don't add DI for i18n or static config; there's no real external
+dependency to invert there.
 
 Each boundary gets its own port interface next to its entity, e.g. `entities/content-pack/api/content-pack-repository.ts`:
 
@@ -118,17 +118,26 @@ export interface ContentPackRepository {
 
 `entities/support-request/api/turnstile-gateway.ts` and `entities/support-request/api/mail-gateway.ts` follow the same
 pattern for the other two boundaries, each with a concrete adapter (`cloudflare-turnstile-gateway.ts`,
-`resend-mail-gateway.ts`) and a fake under `entities/support-request/testing/`.
+`oci-smtp-mail-gateway.ts`) and a fake under `entities/support-request/testing/`.
 
 None of these adapters import `cloudflare:workers` directly — they read secrets and bindings through
 `getRuntimeEnv()` from [src/shared/lib/runtime-env.ts](../../../src/shared/lib/runtime-env.ts), the single file
 allowed to import it (see check 3 above). Depend on the port interface (or the matching fake in the entity's
 `testing/` folder) in tests and calling code, never on the concrete adapter class directly.
 
+`oci-smtp-mail-gateway.ts` also imports `cloudflare:sockets` directly (to open the raw TCP/STARTTLS connection to
+OCI's SMTP relay) — this isn't covered by check 3 (which only guards `cloudflare:workers`), but keep it isolated to
+that one file for the same reason: it's stubbed in tests the same way, via the `cloudflare:sockets` alias in
+[vitest.config.ts](../../../vitest.config.ts) pointing at
+[src/shared/testing/cloudflare-sockets-stub.ts](../../../src/shared/testing/cloudflare-sockets-stub.ts). The SMTP
+protocol logic itself (`sendSupportEmailOverSmtp`, `readSmtpResponse`, `buildMimeMessage`) is exported as plain
+functions operating on a generic `SmtpSocketLike` shape, so it's tested directly against fake in-memory streams
+without ever touching `cloudflare:sockets`.
+
 There's no global DI container and no injection framework. In a per-request SSR environment (Cloudflare Workers), the
 composition root is just the **default parameter** of the route's factory function
 (`repository = createCloudKitRepository()`, or `turnstileGateway = createCloudflareTurnstileGateway()` /
-`mailGateway = createResendMailGateway()` for the support form), invoked by the thin route wrapper.
+`mailGateway = createOciSmtpMailGateway()` for the support form), invoked by the thin route wrapper.
 
 ## Other conventions worth knowing
 
@@ -145,9 +154,9 @@ composition root is just the **default parameter** of the route's factory functi
   loaded as a Wrangler _secret_, not a plaintext var). Calls have a 4s timeout; on failure, degrade gracefully without
   leaking technical error details to the user. Never render an exercise's `notes` field — it's the user's personal note,
   not shareable content.
-- **Support form secrets**: `TURNSTILE_SECRET_KEY` and `RESEND_API_KEY` are server-only secrets (Wrangler secrets in
-  production, see `.env.example`); `PUBLIC_TURNSTILE_SITE_KEY` is the public counterpart the client widget needs.
-  `handleSupportRequest` ([src/views/support/api/handle-support-request.ts](../../../src/views/support/api/handle-support-request.ts))
+- **Support form secrets**: `TURNSTILE_SECRET_KEY`, `OCI_SMTP_USERNAME` and `OCI_SMTP_PASSWORD` are server-only
+  secrets (Wrangler secrets in production, see `.env.example`); `PUBLIC_TURNSTILE_SITE_KEY` is the public counterpart
+  the client widget needs. `handleSupportRequest` ([src/views/support/api/handle-support-request.ts](../../../src/views/support/api/handle-support-request.ts))
   never returns localized error text from the API — only machine-readable codes (`bad_request`, `captcha_failed`,
   `validation_error` + per-field codes, `mail_failed`) — so the client script can map them through the current
   locale's i18n dictionary instead of the server picking a language.

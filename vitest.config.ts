@@ -12,6 +12,10 @@ export default defineConfig(async (env) => {
                     'cloudflare:workers': new URL(
                         './src/shared/testing/cloudflare-workers-stub.ts',
                         import.meta.url
+                    ).pathname,
+                    'cloudflare:sockets': new URL(
+                        './src/shared/testing/cloudflare-sockets-stub.ts',
+                        import.meta.url
                     ).pathname
                 }
             }

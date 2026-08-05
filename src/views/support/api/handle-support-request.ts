@@ -1,6 +1,6 @@
 import {createCloudflareTurnstileGateway} from '@entities/support-request/api/cloudflare-turnstile-gateway';
 import type {TurnstileGateway} from '@entities/support-request/api/turnstile-gateway';
-import {createResendMailGateway} from '@entities/support-request/api/resend-mail-gateway';
+import {createOciSmtpMailGateway} from '@entities/support-request/api/oci-smtp-mail-gateway';
 import type {MailGateway} from '@entities/support-request/api/mail-gateway';
 import {
     parseSupportRequest,
@@ -25,7 +25,7 @@ export async function handleSupportRequest(
     request: Request,
     clientIp: string | null,
     turnstileGateway: TurnstileGateway = createCloudflareTurnstileGateway(),
-    mailGateway: MailGateway = createResendMailGateway()
+    mailGateway: MailGateway = createOciSmtpMailGateway()
 ): Promise<Response> {
     let raw: unknown;
     try {

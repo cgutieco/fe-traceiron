@@ -9,7 +9,7 @@ export const APPSTORE_ID: string = import.meta.env.PUBLIC_APPSTORE_ID ?? '';
 
 export const SUPPORT_EMAIL = 'support@traceiron.com';
 
-/** Remitente del formulario de soporte. El dominio debe estar verificado en Resend. */
+/** Remitente del formulario de soporte. El dominio debe tener un remitente aprobado en OCI Email Delivery. */
 export const SUPPORT_FORM_SENDER_EMAIL = 'no-reply@traceiron.com';
 
 export const TURNSTILE_SITE_KEY: string = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
