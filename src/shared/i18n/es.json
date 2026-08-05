@@ -27,6 +27,10 @@
             "title": "Página No Encontrada — Vuelve al Entrenamiento — TraceIron",
             "description": "Esta página no existe. Vuelve a TraceIron y registra tu entrenamiento de fuerza con el fantasma de tu última sesión proyectado sobre cada serie."
         },
+        "support": {
+            "title": "Soporte — TraceIron",
+            "description": "Obtén ayuda con TraceIron: haz una pregunta, reporta un error o contacta directamente a nuestro equipo de soporte."
+        },
         "ogAlt": "El wordmark de TraceIron en oro sobre negro"
     },
 
@@ -484,6 +488,36 @@
                     ]
                 }
             ]
+        }
+    },
+
+    "support": {
+        "eyebrow": "Soporte",
+        "title": "Estamos para ayudarte",
+        "lead": "¿Tienes una pregunta, encontraste un error o necesitas ayuda con una compra? Envíanos un mensaje y te responderemos por correo.",
+        "fallbackNotice": "También puedes escribirnos directamente a {email}.",
+        "form": {
+            "nameLabel": "Nombre (opcional)",
+            "namePlaceholder": "Jane Doe",
+            "emailLabel": "Email",
+            "emailPlaceholder": "tu@email.com",
+            "messageLabel": "¿Cómo podemos ayudarte?",
+            "messagePlaceholder": "Describe el problema o la pregunta con el mayor detalle posible.",
+            "submit": "Enviar mensaje",
+            "submitting": "Enviando…",
+            "success": "Gracias — recibimos tu mensaje y te responderemos por correo pronto.",
+            "errors": {
+                "bad_request": "Algo salió mal. Por favor intenta de nuevo.",
+                "captcha_failed": "No pudimos verificar que eres humano. Por favor intenta de nuevo.",
+                "mail_failed": "No pudimos enviar tu mensaje. Por favor intenta de nuevo más tarde.",
+                "name_too_long": "El nombre es demasiado largo.",
+                "email_required": "El email es obligatorio.",
+                "email_invalid_format": "Ingresa un email válido.",
+                "message_required": "Por favor describe cómo podemos ayudarte.",
+                "message_too_short": "Por favor agrega un poco más de detalle.",
+                "message_too_long": "El mensaje es demasiado largo.",
+                "generic": "Algo salió mal. Por favor intenta de nuevo."
+            }
         }
     }
 }

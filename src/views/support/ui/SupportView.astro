@@ -1,0 +1,63 @@
+---
+import BaseLayout from '@app/layouts/BaseLayout.astro';
+import {SiteHeader} from '@widgets/site-header';
+import {SiteFooter} from '@widgets/site-footer';
+import {SupportForm} from '@features/support-form';
+import {interpolate, useTranslations, type Locale} from '@shared/i18n';
+import {SUPPORT_EMAIL} from '@shared/config/site';
+
+interface Props {
+    locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const canonicalPath = '/support';
+---
+
+<BaseLayout
+    locale={locale}
+    canonicalPath={canonicalPath}
+    title={t.meta.support.title}
+    description={t.meta.support.description}
+>
+    <SiteHeader locale={locale} canonicalPath={canonicalPath} />
+
+    <main id="main" class="ti-container ti-support">
+        <p class="ti-label">{t.support.eyebrow}</p>
+        <h1 class="ti-display ti-support__title">{t.support.title}</h1>
+        <p class="ti-lead">{t.support.lead}</p>
+
+        <div class="ti-support__form">
+            <SupportForm labels={t.support.form} />
+        </div>
+
+        <p class="ti-small ti-muted ti-support__fallback">
+            {interpolate(t.support.fallbackNotice, {email: SUPPORT_EMAIL})}
+        </p>
+    </main>
+
+    <SiteFooter locale={locale} canonicalPath={canonicalPath} />
+</BaseLayout>
+
+<style>
+    .ti-support {
+        padding-block: var(--sp-xl) var(--sp-2xl);
+        max-width: 760px;
+    }
+
+    .ti-support__title {
+        font-size: var(--fs-h1);
+        color: var(--ti-text);
+        margin-top: var(--sp-xs);
+        margin-bottom: var(--sp-md);
+    }
+
+    .ti-support__form {
+        margin-top: var(--sp-lg);
+    }
+
+    .ti-support__fallback {
+        margin-top: var(--sp-lg);
+    }
+</style>

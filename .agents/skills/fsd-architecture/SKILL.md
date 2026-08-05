@@ -64,9 +64,10 @@ Concretely: if you're writing code in `src/widgets/pricing/`, you may import `@f
    blowing the bundle past `pnpm check:budget`.
 2. **No legacy folders.** Every directory directly under `src/` must be one of the FSD layers, `pages`, or `assets`.
    Don't invent a new top-level folder without updating the architecture check.
-3. **`cloudflare:workers` isolation.** Only one file in the entire `src/` tree may import from `'cloudflare:workers'`.
-   If you need Workers runtime access somewhere new, route through the existing single import point rather than adding a
-   second one.
+3. **`cloudflare:workers` isolation.** Only one file in the entire `src/` tree may import from `'cloudflare:workers'`:
+   [src/shared/lib/runtime-env.ts](../../../src/shared/lib/runtime-env.ts), which exposes `getRuntimeEnv()`. If you
+   need a runtime secret or binding anywhere new, call `getRuntimeEnv()` from that file rather than importing
+   `cloudflare:workers` directly — adding a second direct import fails this check.
 4. **Layer import hierarchy** — see above.
 5. **Thin route wrappers.** Every `src/pages/**/*.astro` file must be ≤15 lines and import only from `@views/*` (plus
    the `astro` package itself). All real page logic belongs in `views/`; `pages/` files just wire a route to a view.
@@ -79,7 +80,9 @@ Concretely: if you're writing code in `src/widgets/pricing/`, you may import `@f
 - New business object with its own data/model, independent of any specific page → `entities/`. Look at
   [src/entities/content-pack](../../../src/entities/content-pack) as the reference shape: `model/` (types + parsing),
   `api/` (repository interface + concrete adapter, e.g. `cloudkit-repository.ts` behind a port/adapter interface),
-  `testing/` (fake repository for tests).
+  `testing/` (fake repository for tests). [src/entities/support-request](../../../src/entities/support-request) is a
+  second example of the same shape with two external I/O boundaries (Turnstile verification, Resend email) instead of
+  one.
 - Generic, reusable, business-agnostic primitive (design tokens, base UI atoms, i18n, config) → `shared/`.
 
 ## Lexicon: don't confuse these three
@@ -94,10 +97,12 @@ anyone reading imports.
 
 ## Dependency inversion (narrow scope on purpose)
 
-Only apply dependency inversion at a genuine external I/O boundary — today that's CloudKit. Don't add DI for i18n or
-static config; there's no real external dependency to invert there.
+Only apply dependency inversion at a genuine external I/O boundary. Today there are three: CloudKit (content-pack
+lookups), Cloudflare Turnstile (bot-challenge verification), and Resend (transactional email) — the latter two back
+the `/support` contact form. Don't add DI for i18n or static config; there's no real external dependency to invert
+there.
 
-The port lives at `entities/content-pack/api/content-pack-repository.ts`:
+Each boundary gets its own port interface next to its entity, e.g. `entities/content-pack/api/content-pack-repository.ts`:
 
 ```ts
 export type ContentPackLookup =
@@ -111,13 +116,19 @@ export interface ContentPackRepository {
 }
 ```
 
-`entities/content-pack/api/cloudkit-repository.ts` is the one production adapter allowed to import
-`cloudflare:workers` (see check 3 above) — no other production or test file may depend on it directly; depend on the
-`ContentPackRepository` interface (or the fake in `entities/content-pack/testing/`) instead.
+`entities/support-request/api/turnstile-gateway.ts` and `entities/support-request/api/mail-gateway.ts` follow the same
+pattern for the other two boundaries, each with a concrete adapter (`cloudflare-turnstile-gateway.ts`,
+`resend-mail-gateway.ts`) and a fake under `entities/support-request/testing/`.
+
+None of these adapters import `cloudflare:workers` directly — they read secrets and bindings through
+`getRuntimeEnv()` from [src/shared/lib/runtime-env.ts](../../../src/shared/lib/runtime-env.ts), the single file
+allowed to import it (see check 3 above). Depend on the port interface (or the matching fake in the entity's
+`testing/` folder) in tests and calling code, never on the concrete adapter class directly.
 
 There's no global DI container and no injection framework. In a per-request SSR environment (Cloudflare Workers), the
 composition root is just the **default parameter** of the route's factory function
-(`repository = createCloudKitRepository()`), invoked by the thin route wrapper.
+(`repository = createCloudKitRepository()`, or `turnstileGateway = createCloudflareTurnstileGateway()` /
+`mailGateway = createResendMailGateway()` for the support form), invoked by the thin route wrapper.
 
 ## Other conventions worth knowing
 
@@ -134,6 +145,12 @@ composition root is just the **default parameter** of the route's factory functi
   loaded as a Wrangler _secret_, not a plaintext var). Calls have a 4s timeout; on failure, degrade gracefully without
   leaking technical error details to the user. Never render an exercise's `notes` field — it's the user's personal note,
   not shareable content.
+- **Support form secrets**: `TURNSTILE_SECRET_KEY` and `RESEND_API_KEY` are server-only secrets (Wrangler secrets in
+  production, see `.env.example`); `PUBLIC_TURNSTILE_SITE_KEY` is the public counterpart the client widget needs.
+  `handleSupportRequest` ([src/views/support/api/handle-support-request.ts](../../../src/views/support/api/handle-support-request.ts))
+  never returns localized error text from the API — only machine-readable codes (`bad_request`, `captcha_failed`,
+  `validation_error` + per-field codes, `mail_failed`) — so the client script can map them through the current
+  locale's i18n dictionary instead of the server picking a language.
 - **Shared-route indexing**: shared content pages use `<meta name="robots" content="noindex, nofollow">` and are omitted
   from `sitemap.xml`, but must stay _allowed_ in `robots.txt` so social platforms can still crawl them for Open Graph
   card previews.

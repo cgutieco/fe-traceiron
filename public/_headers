@@ -1,24 +1,33 @@
 # TRACEIRON — Cabeceras de Cloudflare
 #
 # @astrojs/cloudflare AÑADE a este archivo la regla de Cache-Control inmutable
-# para /_astro/* durante el build [PERF-14]. No dupliques esa regla aquí.
+# para /_astro/* durante el build. No dupliques esa regla aquí.
 
-# [AASA-01] El archivo se sirve SIN extensión .json, con Content-Type
-# application/json, por HTTPS válido y sin ninguna redirección. Sin esta
-# cabecera Cloudflare lo entregaría como octet-stream y iOS lo descartaría.
+# El archivo de asociación de dominio de Apple debe servirse SIN extensión
+# .json, con Content-Type application/json, por HTTPS válido y sin ninguna
+# redirección. Sin esta cabecera Cloudflare lo entregaría como octet-stream y
+# iOS lo descartaría.
 /.well-known/apple-app-site-association
   Content-Type: application/json
   Cache-Control: public, max-age=3600
 
-# [PERF-17] CSP estricta. Al no haber terceros, `default-src 'self'` es
-# alcanzable. El único origen externo del sistema es api.apple-cloudkit.com y se
-# consulta EXCLUSIVAMENTE desde el servidor durante el render [CK-03], por lo
-# que NO aparece en connect-src del cliente.
+# CSP estricta. Al no haber terceros, `default-src 'self'` es alcanzable. El
+# único origen externo del sistema es api.apple-cloudkit.com y se consulta
+# EXCLUSIVAMENTE desde el servidor durante el render, por lo que NO aparece en
+# connect-src del cliente.
 #
-# `script-src 'unsafe-inline'` cubre los dos únicos scripts inline del sitio
-# (selector de idioma y salto de [PRV-04]). Sustituir por hashes en cuanto se
-# estabilicen: son dos, y no cambian.
+# `script-src 'unsafe-inline'` cubre los scripts inline del sitio: el selector
+# de idioma, el salto de idioma en la home (redirección automática según el
+# idioma del navegador), y el manejador de envío del formulario de /support
+# (SupportForm.astro) — Astro inlinea este último en el build estático en vez
+# de emitirlo como chunk externo, al usarse solo en dos páginas
+# prerenderizadas. Sustituir por hashes en cuanto se estabilicen.
+#
+# challenges.cloudflare.com sirve el widget anti-bot de Turnstile en /support:
+# su script se carga vía <script src>, y el reto se renderiza en un iframe, de
+# ahí script-src y frame-src. La verificación real (siteverify) y el envío por
+# Resend ocurren servidor-a-servidor, así que no tocan connect-src del cliente.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; form-action 'none'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; form-action 'none'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff

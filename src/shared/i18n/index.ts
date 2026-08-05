@@ -54,14 +54,14 @@ export function ogLocale(locale: Locale): string {
 }
 
 /**
- * [I18N-03] Resolución canónica de idioma:
+ * Resolución canónica de idioma:
  *
  *   si cookie ti_lang ∈ {en, es}                          → usar ese valor
  *   si no, primer idioma de Accept-Language empieza por es → es
  *   en cualquier otro caso                                 → en   ← fallback
  *
- * Usada por el middleware para `/` y por las rutas de compartir, que por
- * [RTE-04] no llevan prefijo de idioma y resuelven el suyo en el servidor.
+ * Usada por el middleware para `/` y por las rutas de compartir, que no
+ * llevan prefijo de idioma en la URL y resuelven el suyo en el servidor.
  */
 export function resolveLocale(acceptLanguage: string | null, cookieValue?: string | null): Locale {
     if (cookieValue === 'en' || cookieValue === 'es') return cookieValue;

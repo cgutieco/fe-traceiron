@@ -27,6 +27,10 @@
             "title": "Page Not Found — Back to Strength Training — TraceIron",
             "description": "This page does not exist. Return to TraceIron and track your strength training with the ghost of your last session projected over every set."
         },
+        "support": {
+            "title": "Support — TraceIron",
+            "description": "Get help with TraceIron: ask a question, report a bug, or reach our support team directly."
+        },
         "ogAlt": "The TraceIron wordmark in gold on black"
     },
 
@@ -484,6 +488,36 @@
                     ]
                 }
             ]
+        }
+    },
+
+    "support": {
+        "eyebrow": "Support",
+        "title": "We're here to help",
+        "lead": "Have a question, found a bug, or need help with a purchase? Send us a message and we'll reply by email.",
+        "fallbackNotice": "You can also write to us directly at {email}.",
+        "form": {
+            "nameLabel": "Name (optional)",
+            "namePlaceholder": "Jane Doe",
+            "emailLabel": "Email",
+            "emailPlaceholder": "you@example.com",
+            "messageLabel": "How can we help?",
+            "messagePlaceholder": "Describe the issue or question in as much detail as you can.",
+            "submit": "Send message",
+            "submitting": "Sending…",
+            "success": "Thanks — we got your message and will reply by email soon.",
+            "errors": {
+                "bad_request": "Something went wrong. Please try again.",
+                "captcha_failed": "We couldn't verify you're human. Please try again.",
+                "mail_failed": "We couldn't send your message. Please try again later.",
+                "name_too_long": "Name is too long.",
+                "email_required": "Email is required.",
+                "email_invalid_format": "Enter a valid email address.",
+                "message_required": "Please describe how we can help.",
+                "message_too_short": "Please add a bit more detail.",
+                "message_too_long": "Message is too long.",
+                "generic": "Something went wrong. Please try again."
+            }
         }
     }
 }

@@ -7,8 +7,12 @@ description: Visual design tokens and UI component conventions for the fe-tracei
 
 The site is a server-rendered Astro app with **zero client JavaScript by default** — build UI as plain Astro components
 and CSS; don't reach for a client framework or `client:*` directive unless the task genuinely requires interactivity
-that can't be done with HTML/CSS alone. Every screen must pass WCAG 2.1 AA (zero _serious_/ _critical_
-axe-core violations) — respect semantic HTML, focus states, and contrast when using the tokens below.
+that can't be done with HTML/CSS alone. The one deliberate exception is `/support` ([src/features/support-form](../../../src/features/support-form)):
+Cloudflare Turnstile requires a real client-side challenge widget, so its form ships a plain `<script>` (no framework,
+no `client:*`) that does fetch-based submission and state handling. Don't treat this as precedent for adding JS
+elsewhere — it's scoped to that one page because the anti-bot requirement can't be met with HTML/CSS alone. Every
+screen must pass WCAG 2.1 AA (zero _serious_/ _critical_ axe-core violations) — respect semantic HTML, focus states,
+and contrast when using the tokens below.
 
 All values below live in [src/shared/styles/tokens.css](../../../src/shared/styles/tokens.css). Never hardcode a color,
 font-size, spacing, or radius value that already has a token — use the token so the site stays visually consistent and

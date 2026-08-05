@@ -2,7 +2,6 @@
 import {Wordmark} from '@shared/ui/wordmark';
 import {LangSwitcher} from '@features/language-switch';
 import {interpolate, localizePath, useTranslations, type Locale} from '@shared/i18n';
-import {SUPPORT_EMAIL} from '@shared/config/site';
 
 interface Props {
     locale: Locale;
@@ -28,7 +27,7 @@ const year = new Date().getFullYear();
             <nav class="ti-footer__links" aria-label={t.footer.privacy}>
                 <a href={localizePath('/privacy', locale)}>{t.footer.privacy}</a>
                 <a href={localizePath('/terms', locale)}>{t.footer.terms}</a>
-                <a href={`mailto:${SUPPORT_EMAIL}`}>{t.footer.contact}</a>
+                <a href={localizePath('/support', locale)}>{t.footer.contact}</a>
             </nav>
 
             <LangSwitcher locale={locale} canonicalPath={canonicalPath} />

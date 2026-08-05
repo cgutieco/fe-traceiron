@@ -8,6 +8,8 @@ const ACCESSIBILITY_ROUTES = [
     '/es/privacy',
     '/terms',
     '/es/terms',
+    '/support',
+    '/es/support',
     '/404',
     '/s/abcdef'
 ];

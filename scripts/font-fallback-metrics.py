@@ -39,9 +39,9 @@ def x_width_avg(path: str, uppercase: bool = False) -> tuple[float, dict]:
     """Anchura media ponderada, normalizada a em, más las métricas verticales.
 
     `uppercase=True` transforma el set de muestreo a versalitas. Cinzel se
-    compone SIEMPRE en versalitas por [TYP-02], de modo que medir su anchura
+    compone SIEMPRE en versalitas en el sitio, de modo que medir su anchura
     sobre minúsculas daría un size-adjust que no corresponde a nada que se
-    llegue a renderizar en el sitio.
+    llegue a renderizar.
     """
     font = TTFont(path, fontNumber=0)
     upem = font["head"].unitsPerEm

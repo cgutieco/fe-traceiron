@@ -54,8 +54,8 @@ const t = useTranslations(locale);
 const canonicalUrl = `${SITE_URL}${localizePath(canonicalPath, locale)}`;
 const alt = alternatesFor(canonicalPath, SITE_URL);
 
-// [PRV-03] Solo se emite si hay identificador real: una etiqueta con un id
-// vacío es peor que ninguna etiqueta.
+// Solo se emite si hay identificador real: una etiqueta con un id vacío es
+// peor que ninguna etiqueta.
 const smartBanner =
     APPSTORE_ID && appArgument
         ? `app-id=${APPSTORE_ID}, app-argument=${appArgument}`

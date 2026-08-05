@@ -1,4 +1,4 @@
-import {env} from 'cloudflare:workers';
+import {getRuntimeEnv} from '@shared/lib/runtime-env';
 import {isShortId} from '@shared/lib/short-id';
 import type {ContentPackLookup, ContentPackRepository} from './content-pack-repository';
 
@@ -12,7 +12,7 @@ export interface CloudKitConfig {
 }
 
 export function getCloudKitConfig(): CloudKitConfig | null {
-    const runtimeEnv = env as unknown as Record<string, unknown>;
+    const runtimeEnv = getRuntimeEnv();
 
     const token =
         typeof runtimeEnv?.CLOUDKIT_API_TOKEN === 'string' ? runtimeEnv.CLOUDKIT_API_TOKEN : '';

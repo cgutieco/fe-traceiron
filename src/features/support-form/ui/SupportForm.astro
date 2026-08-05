@@ -1,0 +1,320 @@
+---
+import {Icon} from '@shared/ui/icon';
+import {TURNSTILE_SITE_KEY} from '@shared/config/site';
+import {LIMITS} from '@entities/support-request/model/support-request';
+
+export interface SupportFormLabels {
+    nameLabel: string;
+    namePlaceholder: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    messageLabel: string;
+    messagePlaceholder: string;
+    submit: string;
+    submitting: string;
+    success: string;
+    errors: {
+        bad_request: string;
+        captcha_failed: string;
+        mail_failed: string;
+        name_too_long: string;
+        email_required: string;
+        email_invalid_format: string;
+        message_required: string;
+        message_too_short: string;
+        message_too_long: string;
+        generic: string;
+    };
+}
+
+interface Props {
+    labels: SupportFormLabels;
+}
+
+const {labels} = Astro.props;
+const i18n = JSON.stringify(labels);
+---
+
+<form
+    class="ti-support-form"
+    data-support-form
+    data-endpoint="/api/support"
+    data-i18n={i18n}
+    novalidate
+>
+    <div class="ti-support-form__field">
+        <label class="ti-support-form__label" for="support-name">{labels.nameLabel}</label>
+        <input
+            class="ti-support-form__input"
+            type="text"
+            id="support-name"
+            name="name"
+            placeholder={labels.namePlaceholder}
+            maxlength={LIMITS.nameMaxLength}
+            autocomplete="name"
+            aria-describedby="support-name-error"
+        />
+        <p class="ti-support-form__error" id="support-name-error" data-error-for="name" hidden></p>
+    </div>
+
+    <div class="ti-support-form__field">
+        <label class="ti-support-form__label" for="support-email">{labels.emailLabel}</label>
+        <input
+            class="ti-support-form__input"
+            type="email"
+            id="support-email"
+            name="email"
+            placeholder={labels.emailPlaceholder}
+            maxlength={LIMITS.emailMaxLength}
+            autocomplete="email"
+            required
+            aria-describedby="support-email-error"
+        />
+        <p class="ti-support-form__error" id="support-email-error" data-error-for="email" hidden>
+        </p>
+    </div>
+
+    <div class="ti-support-form__field">
+        <label class="ti-support-form__label" for="support-message">{labels.messageLabel}</label>
+        <textarea
+            class="ti-support-form__textarea"
+            id="support-message"
+            name="message"
+            placeholder={labels.messagePlaceholder}
+            minlength={LIMITS.messageMinLength}
+            maxlength={LIMITS.messageMaxLength}
+            rows="6"
+            required
+            aria-describedby="support-message-error"></textarea>
+        <p
+            class="ti-support-form__error"
+            id="support-message-error"
+            data-error-for="message"
+            hidden
+        >
+        </p>
+    </div>
+
+    <div class="ti-support-form__captcha cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY}></div>
+
+    <button class="ti-btn--primary ti-support-form__submit" type="submit" data-submit>
+        <span data-submit-label>{labels.submit}</span>
+    </button>
+
+    <p class="ti-support-form__status" role="status" aria-live="polite" data-status>
+        <Icon name="check" class="ti-support-form__status-icon" />
+        <span data-status-text></span>
+    </p>
+</form>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
+<script>
+    type SupportFieldName = 'name' | 'email' | 'message';
+
+    interface SupportFormRuntimeLabels {
+        submit: string;
+        submitting: string;
+        success: string;
+        errors: Record<string, string>;
+    }
+
+    interface SupportResponseBody {
+        success: boolean;
+        code?: string;
+        fields?: Partial<Record<SupportFieldName, string>>;
+    }
+
+    document.querySelectorAll<HTMLFormElement>('[data-support-form]').forEach((form) => {
+        const i18n: SupportFormRuntimeLabels = JSON.parse(form.dataset.i18n ?? '{}');
+        const endpoint = form.dataset.endpoint ?? '/api/support';
+        const submitButton = form.querySelector<HTMLButtonElement>('[data-submit]');
+        const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]');
+        const status = form.querySelector<HTMLElement>('[data-status]');
+        const statusText = form.querySelector<HTMLElement>('[data-status-text]');
+        const errorEls: Record<SupportFieldName, HTMLElement | null> = {
+            name: form.querySelector<HTMLElement>('[data-error-for="name"]'),
+            email: form.querySelector<HTMLElement>('[data-error-for="email"]'),
+            message: form.querySelector<HTMLElement>('[data-error-for="message"]')
+        };
+
+        function clearErrors() {
+            for (const el of Object.values(errorEls)) {
+                if (!el) continue;
+                el.hidden = true;
+                el.textContent = '';
+            }
+        }
+
+        function showFieldErrors(fields: Partial<Record<SupportFieldName, string>>) {
+            for (const [field, code] of Object.entries(fields) as [SupportFieldName, string][]) {
+                const el = errorEls[field];
+                if (!el) continue;
+                el.textContent = i18n.errors[`${field}_${code}`] ?? i18n.errors.generic;
+                el.hidden = false;
+            }
+        }
+
+        function setStatus(message: string, tone: 'success' | 'error' | null) {
+            if (!status || !statusText) return;
+            statusText.textContent = message;
+            if (tone) status.dataset.tone = tone;
+            else delete status.dataset.tone;
+        }
+
+        function resetTurnstile() {
+            try {
+                const turnstileApi = (
+                    window as unknown as {turnstile?: {reset(el?: Element): void}}
+                ).turnstile;
+                if (!turnstileApi) return;
+                const widget = form.querySelector('.cf-turnstile');
+                if (widget) turnstileApi.reset(widget);
+            } catch {
+                // best-effort: a widget that never rendered has nothing to reset
+            }
+        }
+
+        function setBusy(busy: boolean) {
+            if (submitButton) submitButton.disabled = busy;
+            if (submitLabel) submitLabel.textContent = busy ? i18n.submitting : i18n.submit;
+        }
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearErrors();
+            setStatus('', null);
+            setBusy(true);
+
+            const formData = new FormData(form);
+            const payload = {
+                name: formData.get('name') ?? '',
+                email: formData.get('email') ?? '',
+                message: formData.get('message') ?? '',
+                'cf-turnstile-response': formData.get('cf-turnstile-response') ?? ''
+            };
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+                const body = (await response
+                    .json()
+                    .catch(() => null)) as SupportResponseBody | null;
+
+                if (response.ok && body?.success) {
+                    setStatus(i18n.success, 'success');
+                    form.reset();
+                    resetTurnstile();
+                    return;
+                }
+
+                const code = body?.code ?? 'generic';
+                if (code === 'validation_error' && body?.fields) {
+                    showFieldErrors(body.fields);
+                } else {
+                    setStatus(i18n.errors[code] ?? i18n.errors.generic, 'error');
+                }
+                resetTurnstile();
+            } catch {
+                setStatus(i18n.errors.generic, 'error');
+                resetTurnstile();
+            } finally {
+                setBusy(false);
+            }
+        });
+    });
+</script>
+
+<style>
+    .ti-support-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-md);
+        max-width: 560px;
+    }
+
+    .ti-support-form__field {
+        display: flex;
+        flex-direction: column;
+        gap: var(--sp-2xs);
+    }
+
+    .ti-support-form__label {
+        font-size: var(--fs-small);
+        font-weight: 600;
+        color: var(--ti-text);
+    }
+
+    .ti-support-form__input,
+    .ti-support-form__textarea {
+        min-height: 48px;
+        padding: var(--sp-xs) var(--sp-sm);
+        background: var(--ti-elev-1);
+        border: 1px solid var(--ti-border);
+        border-radius: var(--radius-control);
+        color: var(--ti-text);
+        font-size: var(--fs-body);
+    }
+
+    .ti-support-form__textarea {
+        resize: vertical;
+    }
+
+    .ti-support-form__input::placeholder,
+    .ti-support-form__textarea::placeholder {
+        color: var(--ti-text-muted);
+    }
+
+    .ti-support-form__input:focus-visible,
+    .ti-support-form__textarea:focus-visible {
+        border-color: var(--ti-gold);
+    }
+
+    .ti-support-form__error {
+        font-size: var(--fs-caption);
+        color: var(--ti-error);
+    }
+
+    .ti-support-form__error[hidden] {
+        display: none;
+    }
+
+    .ti-support-form__submit {
+        align-self: flex-start;
+    }
+
+    .ti-support-form__submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .ti-support-form__status {
+        display: flex;
+        align-items: center;
+        gap: var(--sp-2xs);
+        min-height: 1.5em;
+        font-size: var(--fs-small);
+        color: var(--ti-text-muted);
+    }
+
+    .ti-support-form__status-icon {
+        display: none;
+        width: 18px;
+        height: 18px;
+        color: var(--ti-success);
+    }
+
+    .ti-support-form__status[data-tone='success'] {
+        color: var(--ti-success);
+    }
+
+    .ti-support-form__status[data-tone='success'] .ti-support-form__status-icon {
+        display: block;
+    }
+
+    .ti-support-form__status[data-tone='error'] {
+        color: var(--ti-error);
+    }
+</style>
