@@ -91,6 +91,8 @@ jobs:
 
             - name: Build project
               run: pnpm build
+              env:
+                  CLOUDFLARE_VITE_FORCE_LOCAL: 'true'
 
             - name: Check Performance Budget
               run: pnpm check:budget
